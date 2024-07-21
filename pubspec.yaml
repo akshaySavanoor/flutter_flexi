@@ -1,0 +1,19 @@
+name: flexi_ui
+description: >
+  flexi_ui is a Flutter package for building responsive UIs. It overcomes limitations of other packages by allowing adaptive sizing based on small and large screen designs. Easily target multiple screen sizes and create responsive containers and widgets that scale according to parent sizes, making your apps look great on any device.
+
+version: 0.0.1
+
+environment:
+  sdk: '>=3.4.4 <4.0.0'
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  tuple: ^2.0.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
