@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tuple/tuple.dart';
 
-import '../src/flexi_ui.dart';
+import '../lib/flexi_ui.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,8 +20,7 @@ class MyApp extends StatelessWidget {
               // If you are building a responsive web targeting web design (large device),
               // change targetDevice = TargetDeviceType.phonePortrait to TargetDeviceType.desktop
               ScreenAdaptiveConfig.init(
-                  context: context, orientation: orientation
-              );
+                  context: context, orientation: orientation);
               return MaterialApp(
                 debugShowCheckedModeBanner: false,
                 home: HomeScreen(),

@@ -6,3 +6,13 @@
   desktops.
 - **Orientation Handling**: Adapt to changes in screen orientation seamlessly.
 - **Responsive Card Configuration**: Make entire card components responsive effortlessly.
+
+## 0.0.2
+
+- Updated readme.md
+- updated with documentation.
+- updated pubspec.yaml
+
+## 0.0.3
+
+- Fixed formatting issues.

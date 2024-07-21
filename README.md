@@ -246,7 +246,7 @@ You can also use `blockSizeVertical` and `blockSizeHorizontal` to make your scre
 
 ## Additional information
 
-Find more examples here [Examples](https://github.com/akshaySavanoor/adaptify/blob/main/)
+Find more examples here [Examples](https://github.com/akshaySavanoor/flutter_flexi/blob/master/example/main.dart)
 For more information, including detailed usage examples and how to contribute, please refer to the
 documentation. If you encounter any issues, feel free to open an issue on GitHub.
 
