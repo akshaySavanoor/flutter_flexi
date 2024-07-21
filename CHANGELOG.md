@@ -16,3 +16,7 @@
 ## 0.0.3
 
 - Fixed formatting issues.
+
+## 0.0.4
+
+- Update readme.md

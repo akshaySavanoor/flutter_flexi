@@ -32,7 +32,7 @@ To start using flexi_ui, add it to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  flexi_ui: ^1.0.0
+  flexi_ui: ^0.0.4
 ```
 
 Then, import it in your main Dart code:
@@ -44,7 +44,7 @@ import 'package:tuple/tuple.dart'; // Import the tuple package
 
 ## Usage
 
-### ScreenAdaptiveConfig
+## ScreenAdaptiveConfig
 Before you start coding, please note that this package relies entirely on calculations based on
 screen size changes. Therefore, do not use ***const*** with this package, except for tuples. If you do, it won't
 work properly, as it needs to be triggered whenever Screen size changes.
@@ -181,7 +181,7 @@ Below is an example of how to create a responsive widget:
 ```
 The main difference between adaptive and responsive is that adaptive design is based on two values: target values for small and large screens. In contrast, responsive design relies on a single screen value. By default, responsive design targets small screen sizes, but you can change this during initialization. Typically, you'll use aw for adaptive design, while ah is rarely used unless you need to adjust based on screen height.
 
-### ResponsiveCardConfig
+## ResponsiveCardConfig
 
 If you have a card with multiple child widgets, you can use `ResponsiveCardConfig`. This requires the currentParentWidth and currentParentHeight, which you can obtain using LayoutBuilder to pass the maxWidth and maxHeight. Additionally, you need to specify the targetParentWidth and targetParentHeight, which represent the target dimensions of the container, for example, a card with a width of 300 and a height of 300.
 
@@ -247,7 +247,8 @@ You can also use `blockSizeVertical` and `blockSizeHorizontal` to make your scre
 ## Additional information
 
 Find more examples here [Examples](https://github.com/akshaySavanoor/flutter_flexi/blob/master/example/main.dart)
-For more information, including detailed usage examples and how to contribute, please refer to the
-documentation. If you encounter any issues, feel free to open an issue on GitHub.
 
-We welcome contributions!.
+## Community support
+
+If you have any suggestions or issues, feel free to open an [Issue](https://github.com/akshaySavanoor/flutter_flexi/issues).
+If you would like to contribute, feel free to create a [PR](https://github.com/akshaySavanoor/flutter_flexi/pulls).
