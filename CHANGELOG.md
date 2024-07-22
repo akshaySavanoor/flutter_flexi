@@ -25,3 +25,7 @@
 
 - No need to add an external tuple package.
 - Updated flexi_ui_example.
+
+## 0.0.6
+
+- import optimization

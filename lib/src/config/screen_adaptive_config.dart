@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../constants/constants.dart';
 
 /// A class that provides screen size and orientation adaptation utilities.

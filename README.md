@@ -38,8 +38,7 @@ dependencies:
 Then, import it in your main Dart code:
 
 ```dart
-import 'package:adaptify/flexi_ui.dart';
-import 'package:tuple/tuple.dart'; // Import the tuple package
+import 'package:flexi_ui/flexi_ui.dart';
 ```
 
 ## Usage
@@ -52,9 +51,7 @@ work properly, as it needs to be triggered whenever Screen size changes.
 Here is a simple example to get you started:
 
 ```dart
-import 'package:flutter/material.dart';
-import 'package:adaptify/flexi_ui.dart';
-import 'package:tuple/tuple.dart';
+import 'package:flexi_ui/flexi_ui.dart';
 
 void main() {
   runApp(MyApp());
@@ -246,7 +243,7 @@ You can also use `blockSizeVertical` and `blockSizeHorizontal` to make your scre
 
 ## Additional information
 
-Find more examples here [Examples](https://github.com/akshaySavanoor/flutter_flexi/blob/master/example/main.dart)
+Find more examples here [Examples](https://github.com/akshaySavanoor/flutter_flexi/blob/master/example/flexi_ui_example.dart)
 
 ## Community support
 
