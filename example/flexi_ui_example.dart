@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tuple/tuple.dart';
-
-import '../lib/flexi_ui.dart';
+import 'package:flexi_ui/flexi_ui.dart';
 
 void main() {
   runApp(const MyApp());
@@ -61,10 +59,6 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                "Adaptive Text",
-                style: TextStyle(fontSize: 12.fw),
-              ),
               Container(
                 color: Colors.blueAccent,
                 width: 100.fw,
@@ -87,12 +81,12 @@ class HomeScreen extends StatelessWidget {
                   Container(
                     color: Colors.orange,
                     width: 50.fw,
-                    height: 50.fh,
+                    height: 30.fh,
                   ),
                   Container(
                     color: Colors.red,
                     width: 50.fw,
-                    height: 50.fh,
+                    height: 30.fh,
                   ),
                 ],
               ),

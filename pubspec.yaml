@@ -4,7 +4,7 @@ author: Akshay <akshaysavanoor@gmail.com>
 homepage: https://github.com/akshaySavanoor/flutter_flexi
 repository: https://github.com/akshaySavanoor/flutter_flexi
 
-version: 0.0.3
+version: 0.0.5
 
 environment:
   sdk: ">=2.17.0 <3.0.0"

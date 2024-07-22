@@ -20,3 +20,8 @@
 ## 0.0.4
 
 - Update readme.md
+
+## 0.0.5
+
+- No need to add an external tuple package.
+- Updated flexi_ui_example.
