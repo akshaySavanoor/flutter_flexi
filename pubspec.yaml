@@ -1,10 +1,9 @@
 name: flexi_ui
 description: A Flutter package for adaptive UIs, simplifying responsive design with flexible and adaptive widgets.
-author: Akshay <akshaysavanoor@gmail.com>
 homepage: https://github.com/akshaySavanoor/flutter_flexi
 repository: https://github.com/akshaySavanoor/flutter_flexi
 
-version: 0.0.6
+version: 0.0.7
 
 environment:
   sdk: ">=2.17.0 <3.0.0"

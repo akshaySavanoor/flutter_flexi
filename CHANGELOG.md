@@ -9,13 +9,13 @@
 
 ## 0.0.2
 
-- Updated readme.md
-- updated with documentation.
-- updated pubspec.yaml
+- Update readme.md
+- update with documentation.
+- update pubspec.yaml
 
 ## 0.0.3
 
-- Fixed formatting issues.
+- Fix formatting issues.
 
 ## 0.0.4
 
@@ -23,9 +23,13 @@
 
 ## 0.0.5
 
-- No need to add an external tuple package.
-- Updated flexi_ui_example.
+- Update tuple package.
+- Update flexi_ui_example.
 
 ## 0.0.6
 
 - import optimization
+
+## 0.0.7
+
+- Feature Demo

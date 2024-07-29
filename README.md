@@ -17,6 +17,8 @@ card will be responsive using flexible extensions.
 Overall, this package is used for creating adaptive designs that will be adaptive for any screen
 size.
 
+**Demo**: [https://flexi-ui-demo.web.app/](https://flexi-ui-demo.web.app/). 
+
 ## Features
 
 - **Responsive Widgets**: Automatically adjust widget sizes based on the screen size.
@@ -32,7 +34,7 @@ To start using flexi_ui, add it to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  flexi_ui: ^0.0.4
+  flexi_ui: ^0.0.7
 ```
 
 Then, import it in your main Dart code:
