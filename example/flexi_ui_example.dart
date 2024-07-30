@@ -18,7 +18,8 @@ class MyApp extends StatelessWidget {
               // If you are building a responsive web targeting web design (large device),
               // change targetDevice = TargetDeviceType.phonePortrait to TargetDeviceType.desktop
               ScreenAdaptiveConfig.init(
-                  context: context, orientation: orientation);
+                  context: context, orientation: orientation,
+              );
               return MaterialApp(
                 debugShowCheckedModeBanner: false,
                 home: HomeScreen(),
