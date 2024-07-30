@@ -45,6 +45,9 @@ class ScreenAdaptiveConfig {
   /// [designMinWidth] and [designMaxWidth] define the minimum and maximum design widths.
   /// [designMinHeight] and [designMaxHeight] define the minimum and maximum design heights.
   /// [targetDevice] specifies the target device type for adaptation.
+  /// [mobilePortraitBreakpoint] defines the small screen or mobile breakpoint.
+  /// [mobileLandscapeBreakpoint] defines the tablet screen or mobile landscape breakpoint.
+  /// [tabletLandscapeBreakpoint] defines the large screen or tablet landscape breakpoint.
   static void init({
     required BuildContext context,
     required Orientation orientation,
@@ -52,6 +55,9 @@ class ScreenAdaptiveConfig {
     double designMaxWidth = 1440,
     double designMinHeight = 480,
     double designMaxHeight = 1024,
+    double mobilePortraitBreakpoint = 480,
+    double mobileLandscapeBreakpoint = 768,
+    double tabletLandscapeBreakpoint = 1024,
     TargetDeviceType targetDevice = TargetDeviceType.phonePortrait,
   }) {
     MediaQueryData mediaQueryData = MediaQuery.of(context);
@@ -61,6 +67,9 @@ class ScreenAdaptiveConfig {
     final screenInfo = ScreenInfo(
       width: mediaQueryData.size.width,
       height: mediaQueryData.size.height,
+      mobilePortraitBreakpoint: mobilePortraitBreakpoint,
+      mobileLandscapeBreakpoint: mobileLandscapeBreakpoint,
+      tabletLandscapeBreakpoint: tabletLandscapeBreakpoint,
       orientation: orientation,
     );
 
@@ -165,6 +174,9 @@ class ScreenInfo {
   final double width;
   final double height;
   final Orientation orientation;
+  final double mobilePortraitBreakpoint;
+  final double mobileLandscapeBreakpoint;
+  final double tabletLandscapeBreakpoint;
 
   /// Constructs a [ScreenInfo] instance with the given parameters.
   ///
@@ -175,6 +187,9 @@ class ScreenInfo {
     required this.width,
     required this.height,
     required this.orientation,
+    required this.mobilePortraitBreakpoint,
+    required this.mobileLandscapeBreakpoint,
+    required this.tabletLandscapeBreakpoint,
   });
 }
 
@@ -217,9 +232,9 @@ class DeviceTypeConfig {
   ///
   /// Sets flags for phone portrait, phone landscape, tablet landscape, and desktop device types.
   void _initializeDeviceType() {
-    isPhonePortrait = screenInfo.width <= 480;
-    isPhoneLandscape = screenInfo.width <= 768 && !isPhonePortrait;
-    isTabletLandscape = screenInfo.width <= 1024 && !isPhoneLandscape;
+    isPhonePortrait = screenInfo.width <= screenInfo.mobilePortraitBreakpoint;
+    isPhoneLandscape = screenInfo.width <= screenInfo.mobileLandscapeBreakpoint && !isPhonePortrait;
+    isTabletLandscape = screenInfo.width <= screenInfo.tabletLandscapeBreakpoint && !isPhoneLandscape;
     isDesktop = !isTabletLandscape;
 
     if (screenInfo.orientation == Orientation.portrait) {

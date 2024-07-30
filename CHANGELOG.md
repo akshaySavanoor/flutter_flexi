@@ -33,3 +33,7 @@
 ## 0.0.7
 
 - Feature Demo
+
+## 0.0.8
+
+- update screen_adaptive_config

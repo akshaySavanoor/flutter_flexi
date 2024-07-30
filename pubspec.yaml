@@ -3,7 +3,7 @@ description: A Flutter package for adaptive UIs, simplifying responsive design w
 homepage: https://github.com/akshaySavanoor/flutter_flexi
 repository: https://github.com/akshaySavanoor/flutter_flexi
 
-version: 0.0.7
+version: 0.0.8
 
 environment:
   sdk: ">=2.17.0 <3.0.0"

@@ -34,7 +34,7 @@ To start using flexi_ui, add it to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  flexi_ui: ^0.0.7
+  flexi_ui: ^0.0.8
 ```
 
 Then, import it in your main Dart code:
@@ -245,7 +245,7 @@ You can also use `blockSizeVertical` and `blockSizeHorizontal` to make your scre
 
 ## Additional information
 
-Find more examples here [Examples](https://github.com/akshaySavanoor/flutter_flexi/blob/master/example/flexi_ui_example.dart)
+Find more examples here [Examples](https://github.com/akshaySavanoor/Flexi-UI-Demo)
 
 ## Community support
 
