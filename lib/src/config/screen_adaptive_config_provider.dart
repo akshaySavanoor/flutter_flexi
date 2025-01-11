@@ -1,5 +1,4 @@
 import 'dart:math';
-import '../constants/constants.dart';
 import '../../flexi_ui.dart';
 
 /// Provides extension methods for adapting sizes based on screen dimensions in the `ScreenAdaptiveConfig`.
