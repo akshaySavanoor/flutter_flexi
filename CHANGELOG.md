@@ -37,3 +37,7 @@
 ## 0.0.8
 
 - update screen_adaptive_config
+
+## 0.0.9
+
+- update screen_adaptive_config_provider( Import optimization)
