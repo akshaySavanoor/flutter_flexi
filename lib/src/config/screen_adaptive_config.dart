@@ -233,8 +233,12 @@ class DeviceTypeConfig {
   /// Sets flags for phone portrait, phone landscape, tablet landscape, and desktop device types.
   void _initializeDeviceType() {
     isPhonePortrait = screenInfo.width <= screenInfo.mobilePortraitBreakpoint;
-    isPhoneLandscape = screenInfo.width <= screenInfo.mobileLandscapeBreakpoint && !isPhonePortrait;
-    isTabletLandscape = screenInfo.width <= screenInfo.tabletLandscapeBreakpoint && !isPhoneLandscape;
+    isPhoneLandscape =
+        screenInfo.width <= screenInfo.mobileLandscapeBreakpoint &&
+            !isPhonePortrait;
+    isTabletLandscape =
+        screenInfo.width <= screenInfo.tabletLandscapeBreakpoint &&
+            !isPhoneLandscape;
     isDesktop = !isTabletLandscape;
 
     if (screenInfo.orientation == Orientation.portrait) {
