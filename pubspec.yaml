@@ -1,13 +1,13 @@
 name: flexi_ui
-description: A Flutter package for adaptive UIs, simplifying responsive design with flexible and adaptive widgets.
+description: A powerful Flutter package for adaptive and responsive UIs with fluid scaling, breakpoints, and component-level responsiveness.
+version: 1.1.0
 homepage: https://github.com/akshaySavanoor/flutter_flexi
 repository: https://github.com/akshaySavanoor/flutter_flexi
-
-version: 0.1.0
+issue_tracker: https://github.com/akshaySavanoor/flutter_flexi/issues
 
 environment:
-  sdk: ">=2.19.0 <4.0.0"
-  flutter: ">=1.20.0"
+  sdk: ">=3.0.0 <4.0.0"
+  flutter: ">=3.10.0"
 
 dependencies:
   flutter:
@@ -18,3 +18,10 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^3.0.0
+
+topics:
+  - responsive
+  - adaptive-ui
+  - flutter-layout
+  - screen-scaling
+  - breakpoints

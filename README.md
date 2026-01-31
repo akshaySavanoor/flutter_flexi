@@ -1,253 +1,142 @@
-# flexi_ui
+# Flutter Flexi UI
 
-If you have struggled with creating platform-specific UIs in Flutter, use flexi_ui. Our package
-addresses the issues found in the `screen_util` package. While `screen_util` is great for creating
-responsive UIs in Flutter, it falls short when targeting multiple Figma designs, such as small
-screens and large screens. flexi_ui solves this problem by allowing you to provide two values for
-small and large screens, and it will calculate the rest for you.
+**High-Performance, Context-Aware, and SOLID Responsive Design for Flutter.**
 
-You can target just small screens using responsive extensions, which will automatically adapt to
-large screens. Similarly, if you target large screens, you can also cater to small screens by
-providing the target device while initializing flexi_ui.
+Flexi UI is a modern responsive framework designed to solve the common pitfalls of existing packages like `screen_util`. It provides a declarative, `InheritedWidget`-based architecture that allows for **full `const` constructor support**, **high-performance granular rebuilds**, and clean, maintainable code.
 
-If you have a card that should be responsive, you can use `ResponsiveCardConfig`. By providing the
-target card width and height, you can create an adaptive container where all elements inside the
-card will be responsive using flexible extensions.
+## 🚀 Key Advantages
 
-Overall, this package is used for creating adaptive designs that will be adaptive for any screen
-size.
+- **Full `const` Support**: Unlike other packages, Flexi UI works perfectly with `const` widgets, allowing Flutter to cache your UI tree and skip unnecessary builds.
+- **Granular Rebuilds (Aspects)**: Using `InheritedModel`, widgets only rebuild when the specific dimension they care about (width or height) actually changes.
+- **Zero LayoutBuilder Overhead**: By eliminating the need for deeply nested `LayoutBuilder` widgets, you reduce `RenderObject` calculation time significantly.
+- **Directional Awareness**: Separate `width` and `height` tracking ensures high-fidelity scaling.
+- **SOLID Design**: Decouples responsive logic from global state, making your widgets testable and predictable.
 
-**Demo**: [https://flexi-ui-demo.web.app/](https://flexi-ui-demo.web.app/). 
+## ⚙️ Core Concepts
 
-## Features
-
-- **Responsive Widgets**: Automatically adjust widget sizes based on the screen size.
-- **Adaptive Text**: Scale text sizes dynamically.
-- **Device-Specific Layouts**: Tailor your UI for different devices like phones, tablets, and
-  desktops.
-- **Orientation Handling**: Adapt to changes in screen orientation seamlessly.
-- **Responsive Card Configuration**: Make entire card components responsive effortlessly.
-
-## Getting Started
-
-To start using flexi_ui, add it to your `pubspec.yaml`:
-
-```yaml
-dependencies:
-  flexi_ui: ^0.0.8
-```
-
-Then, import it in your main Dart code:
+### 1. Root Configuration
+Wrap your `MaterialApp` in a `FlexiConfig` widget. This replaces the old imperative initialization.
 
 ```dart
-import 'package:flexi_ui/flexi_ui.dart';
-```
-
-## Usage
-
-## ScreenAdaptiveConfig
-Before you start coding, please note that this package relies entirely on calculations based on
-screen size changes. Therefore, do not use ***const*** with this package, except for tuples. If you do, it won't
-work properly, as it needs to be triggered whenever Screen size changes.
-
-Here is a simple example to get you started:
-
-```dart
-import 'package:flexi_ui/flexi_ui.dart';
-
-void main() {
-  runApp(MyApp());
-}
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Builder(
-        builder: (context) {
-          return OrientationBuilder(
-            builder: (context, orientation) {
-              // Initialize flexi_ui with context and orientation
-              // The default values are double designMinWidth = 360 and double designMaxWidth = 1440.
-              // You can adjust these values based on your design requirements. Similarly, you can adjust the heights.
-              // Although flexi_ui primarily adapts sizes based on width, height adjustments may still be necessary in certain cases, such as for diagonal elements.
-
-              ScreenAdaptiveConfig.init(
-                      context: context,
-                      orientation: orientation,
-                      targetDevice: TargetDeviceType.phonePortrait // Default target device. Only change this if you are creating a responsive design for large screens and targeting small screens.
-              );
-              return MaterialApp(
-                debugShowCheckedModeBanner: false,
-                home: HomeScreen(),
-              );
-            },
-          );
-        },
-      ),
-    );
-  }
-}
-
-class HomeScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: adaptiveText(),
+    return const FlexiConfig( // High performance!
+      child: MaterialApp(
+        home: HomeScreen(),
       ),
     );
   }
 }
 ```
 
-In the code below, we use a tuple with two values.
-The first value represents the minimum font size for small screens,
-while the second value represents the font size for large screens.
-Using the aw method will make the font size responsive across other screen sizes.
+### 2. Context-Aware Extensions
+Access responsive values using the `BuildContext`. This allows Flutter to track the dependency correctly.
+
+| Extension | Purpose | Example |
+| :--- | :--- | :--- |
+| `.w(context)` | % of Screen Width | `0.5.w(context)` |
+| `.h(context)` | % of Screen Height | `0.2.h(context)` |
+| `.rw(context)` | Scaled Width (Design) | `100.rw(context)` |
+| `.aw(context)` | Adaptive (Tuple-based) | `const Tuple2(12, 40).aw(context)` |
+
+### 3. Parent-Relative Responsiveness
+Need a card to scale its children based on *its* size rather than the whole screen? Use `ResponsiveLayout`.
 
 ```dart
-Widget adaptiveText() {
-  return Text(
-    "Adaptive Text",
-    style: TextStyle(fontSize: const Tuple2(12, 40).aw),
-  );
-}
+const ResponsiveLayout(
+  targetWidth: 300,
+  child: MyResponsiveCard(), // Inside, use .fw(context)
+)
 ```
 
-To render a device-specific widget, you can do it as follows:
+## 🔄 Migration Guide (0.x -> 1.0.0)
 
+Version 1.0.0 is a planned breaking change to ensure high performance and SOLID principles.
+
+### 1. Root Setup
+**Old (Imperative):**
 ```dart
- Widget deviceSpecificWidget() {
-    return Center(
-      child: ScreenAdaptiveConfig.instance!.isPhonePortrait
-          ? const Text("Small Screen")
-          : const Text("Large Screen"),
-    );
-  }
+ScreenAdaptiveConfig.init(context: context, orientation: orientation);
 ```
-To display a widget based on screen height, use h. For width, use w. For example:
-
+**New (Declarative):**
 ```dart
- Widget halfScreenWidth() {
-    return Container(
-      width: 0.5.w,
-      height: 40,
-      color: Colors.red,
-    );
-  }
+const FlexiConfig(child: MaterialApp(...));
 ```
 
-If you want a widget to be responsive to both height and width, use the diagonal extension.
+### 2. Extension Methods
+All responsive extensions now require the `BuildContext` to enable granular updates. Remove `_legacy` suffixes.
+
+| Old (v0.x) | New (v1.0.0) |
+| :--- | :--- |
+| `100.w` | `100.w(context)` |
+| `100.rw` | `100.rw(context)` |
+| `Tuple2(12, 40).aw` | `Tuple2(12, 40).aw(context)` |
+| `10.fw` | `10.fw(context)` |
+
+> [!TIP]
+> Use **Command + .** (VS Code) or **Alt + Enter** (Android Studio) to quickly add `context` to your extensions.
+
+### 3. Parent-Relative Scaling
+**Old**: Used `LayoutBuilder` manually with `ResponsiveCardConfig`.  
+**New**: Wrap your widget in `ResponsiveLayout`.
+
+---
+
+## 🛠 Advanced Features
+
+### Discrete Breakpoints
+Use `BreakpointValue` to provide specific values for different device types instead of linear scaling.
 
 ```dart
- Widget adaptiveWidget2() {
-    return Center(
-      child: Container(
-        width: Tuple2(20, 80).d,
-        height: Tuple2(20, 80).d,
-        decoration: BoxDecoration(
-          color: Colors.red,
-          borderRadius: BorderRadius.circular(Tuple2(20, 80).d),
+const columns = BreakpointValue<int>(
+  mobile: 2,
+  tablet: 4,
+  desktop: 6,
+);
+
+// Resolve it anywhere
+int current = columns.v(context);
+```
+
+### 🌊 Universal Fluid Scaling (Continuous)
+Sometimes you want values to grow proportionally between your mobile and desktop designs. This isn't just for typography—it works for **padding, margins, spacing, and any numeric dimension**.
+
+Use the `.aw(max, context)` extension for width-based scaling or `.ah(max, context)` for height-based scaling.
+
+```dart
+Column(
+  children: [
+    Padding(
+      padding: EdgeInsets.all(16.aw(32, context)), // Fluid padding: 16 -> 32
+      child: Text(
+        'Fluid EVERYTHING',
+        style: TextStyle(
+          fontSize: 18.aw(36, context), // Fluid font: 18 -> 36
         ),
       ),
-    );
-  }
-```
-Below is an example of how to create a adaptive widget:
-
-```dart
- Widget adaptiveWidget() {
-    return Center(
-      child: Container(
-        width: Tuple2(100, 500).aw,
-        height: Tuple2(100, 500).aw,
-        color: Colors.green,
-      ),
-    );
-  }
+    ),
+    SizedBox(height: 10.aw(20, context)), // Fluid spacing: 10 -> 20
+  ],
+)
 ```
 
-Below is an example of how to create a responsive widget:
+> [!IMPORTANT]
+> **Performance Optimized**: `aw` only subscribes to 'width' changes, and `ah` only to 'height' changes. Your widgets won't rebuild unnecessarily if other screen properties (like pixel ratio) change.
 
-```dart
- Widget responsiveText() {
-    return Text(
-      "Responsive Text",
-      style: TextStyle(fontSize: 12.rw),
-    );
-  }
-```
-The main difference between adaptive and responsive is that adaptive design is based on two values: target values for small and large screens. In contrast, responsive design relies on a single screen value. By default, responsive design targets small screen sizes, but you can change this during initialization. Typically, you'll use aw for adaptive design, while ah is rarely used unless you need to adjust based on screen height.
+### Device Pixel Ratio Awareness
+Flexi UI is sensitive to DPR, ensuring that your UI looks crisp and scaled correctly even when moving apps between high-density and low-density displays.
 
-## ResponsiveCardConfig
+## 📊 Performance Visualization
+The new architecture ensures that "Heavy Widgets" (expensive to build) can be marked as `const`. As long as they don't use the responsive extensions themselves, they will **remain cached** even while other parts of the UI scale dynamically.
 
-If you have a card with multiple child widgets, you can use `ResponsiveCardConfig`. This requires the currentParentWidth and currentParentHeight, which you can obtain using LayoutBuilder to pass the maxWidth and maxHeight. Additionally, you need to specify the targetParentWidth and targetParentHeight, which represent the target dimensions of the container, for example, a card with a width of 300 and a height of 300.
+## 🤝 Community & Support
 
-```dart
-LayoutBuilder( builder: (context, constraints) {
-        ResponsiveCardConfig().init(
-          currentParentWidth: constraints.maxWidth,
-          currentParentHeight: constraints.maxHeight,
-          targetParentWidth: 300,
-          targetParentHeight: 300,
-        );
-        return Container(
-          color: Colors.lightBlue,
-          width: 300.rw,
-          height: 300.rw,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                "Adaptive Text",
-                style: TextStyle(fontSize: 12.fw),
-              ),
-              Container(
-                color: Colors.blueAccent,
-                width: 100.fw,
-                height: 100.fh,
-                child: Center(
-                  child: Container(
-                    width: 30.fw,
-                    height: 30.fw,
-                    decoration: BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.circular(30.fw),
-                    ),
-                  ),
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    color: Colors.orange,
-                    width: 50.fw,
-                    height: 50.fh,
-                  ),
-                  Container(
-                    color: Colors.red,
-                    width: 50.fw,
-                    height: 50.fh,
-                  ),
-                ],
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-```
-You can also use `blockSizeVertical` and `blockSizeHorizontal` to make your screen responsive by manually calculating values based on the block sizes. Similarly, you can use `safeBlocks` from `ScreenAdaptiveConfig`, which provides block sizes by considering safe values (eliminating device paddings). However, we don't actually need these since we have responsive and adaptive extensions.
+- **Bugs/Issues**: [Open an Issue](https://github.com/akshaySavanoor/flutter_flexi/issues)
+- **Contributions**: [Submit a PR](https://github.com/akshaySavanoor/flutter_flexi/pulls)
 
-## Additional information
-
-Find more examples here [Examples](https://github.com/akshaySavanoor/Flexi-UI-Demo)
-
-## Community support
-
-If you have any suggestions or issues, feel free to open an [Issue](https://github.com/akshaySavanoor/flutter_flexi/issues).
-If you would like to contribute, feel free to create a [PR](https://github.com/akshaySavanoor/flutter_flexi/pulls).
+Made with ❤️ for the Flutter Community.

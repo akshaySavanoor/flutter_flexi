@@ -1,134 +1,123 @@
 import 'dart:math';
+
+import 'package:flutter/widgets.dart';
+
 import '../../flexi_ui.dart';
 
-/// Provides extension methods for adapting sizes based on screen dimensions in the `ScreenAdaptiveConfig`.
-///
-/// These extensions allow you to calculate dimensions relative to the screen width, height, and design dimensions.
+/// Provides extension methods for adapting sizes based on screen dimensions.
 extension SizeExtension on num {
-  /// Calculates width based on a percentage of the screen width.
-  ///
-  /// This method returns the width of the screen multiplied by the current value.
-  double get w {
-    return this * ScreenAdaptiveConfig.instance!.screenWidth;
+  /// Calculates width based on a percentage of the screen width using context.
+  double w(BuildContext context) {
+    final data = FlexiInheritedWidget.of(context, aspect: 'width');
+    if (data == null) throw Exception('FlexiConfig not found in context.');
+    return this * data.screenWidth;
   }
 
-  /// Calculates height based on a percentage of the screen height.
-  ///
-  /// This method returns the height of the screen multiplied by the current value.
-  double get h {
-    return this * ScreenAdaptiveConfig.instance!.screenHeight;
+  /// Calculates height based on a percentage of the screen height using context.
+  double h(BuildContext context) {
+    final data = FlexiInheritedWidget.of(context, aspect: 'height');
+    if (data == null) throw Exception('FlexiConfig not found in context.');
+    return this * data.screenHeight;
   }
 
-  /// Calculates responsive width based on the design width values for the target device type.
-  ///
-  /// This method adjusts the width based on the current screen width and the design width values
-  /// for either a portrait or landscape phone. It scales the width proportionally between the
-  /// minimum and maximum design widths.
-  double get rw {
-    double designWidthValue = ScreenAdaptiveConfig.instance!.targetDeviceType ==
-            TargetDeviceType.phonePortrait
-        ? ScreenAdaptiveConfig.instance!.designMinWidth
-        : ScreenAdaptiveConfig.instance!.designMaxWidth;
-    return (this * ScreenAdaptiveConfig.instance!.screenWidth) /
-        designWidthValue;
+  /// Calculates responsive width using context.
+  double rw(BuildContext context) {
+    final data = FlexiInheritedWidget.of(context, aspect: 'width');
+    if (data == null) throw Exception('FlexiConfig not found in context.');
+    double designWidthValue =
+        data.deviceTypeConfig.targetDeviceType == TargetDeviceType.phonePortrait
+            ? data.deviceTypeConfig.designMinWidth
+            : data.deviceTypeConfig.designMaxWidth;
+    return (this * data.screenWidth) / designWidthValue;
   }
 
-  /// Calculates responsive height based on the design height values for the target device type.
-  ///
-  /// This method adjusts the height based on the current screen height and the design height values
-  /// for either a portrait or landscape phone. It scales the height proportionally between the
-  /// minimum and maximum design heights.
-  double get rh {
+  /// Calculates responsive height using context.
+  double rh(BuildContext context) {
+    final data = FlexiInheritedWidget.of(context, aspect: 'height');
+    if (data == null) throw Exception('FlexiConfig not found in context.');
     double designHeightValue =
-        ScreenAdaptiveConfig.instance!.targetDeviceType ==
-                TargetDeviceType.phonePortrait
-            ? ScreenAdaptiveConfig.instance!.designMinHeight
-            : ScreenAdaptiveConfig.instance!.designMaxHeight;
-    return (this * ScreenAdaptiveConfig.instance!.screenHeight) /
-        designHeightValue;
+        data.deviceTypeConfig.targetDeviceType == TargetDeviceType.phonePortrait
+            ? data.deviceTypeConfig.designMinHeight
+            : data.deviceTypeConfig.designMaxHeight;
+    return (this * data.screenHeight) / designHeightValue;
   }
+
+  /// Linearly interpolates from this value to [max] based on the current
+  /// screen width relative to the design width range.
+  ///
+  /// Example: `16.aw(24, context)` for fluid typography.
+  double aw(num max, BuildContext context) => Tuple2(this, max).aw(context);
+
+  /// Linearly interpolates from this value to [max] based on the current
+  /// screen height relative to the design height range.
+  double ah(num max, BuildContext context) => Tuple2(this, max).ah(context);
 }
 
-/// Provides extension methods for adapting width based on a tuple of values for different screen sizes.
+/// Provides adaptive width extensions for [Tuple2].
 ///
-/// This extension allows you to calculate width values that adapt to screen size variations using
-/// a range of design dimensions and screen width.
+/// Use this for continuous (fluid) scaling between two values based on screen width.
 extension AdaptiveWidthExtension on Tuple2<num, num> {
-  /// Calculates adaptive width based on the screen width and design width values.
+  /// Linearly interpolates between [item1] and [item2] based on the current
+  /// screen width relative to the design width range ([designMinWidth] to [designMaxWidth]).
   ///
-  /// This method interpolates between a small screen value and a large screen value based on the
-  /// current screen width. It returns a width that scales proportionally between the minimum and
-  /// maximum design widths.
-  double get aw {
+  /// Useful for "Fluid Typography", spacing, or any dimension that should grow proportionally.
+  /// Subscribes only to width changes for maximum performance.
+  double aw(BuildContext context) {
+    final data = FlexiInheritedWidget.of(context, aspect: 'width');
+    if (data == null) throw Exception('FlexiConfig not found in context.');
     double smallScreenValue = item1.toDouble();
     double largeScreenValue = item2.toDouble();
-    double minWidth = ScreenAdaptiveConfig.instance!.designMinWidth;
-    double maxWidth = ScreenAdaptiveConfig.instance!.designMaxWidth;
-
-    if (ScreenAdaptiveConfig.instance!.screenWidth < minWidth) {
-      return smallScreenValue;
-    } else if (ScreenAdaptiveConfig.instance!.screenWidth > maxWidth) {
-      return largeScreenValue;
-    } else {
-      return smallScreenValue +
-          (largeScreenValue - smallScreenValue) *
-              (ScreenAdaptiveConfig.instance!.screenWidth - minWidth) /
-              (maxWidth - minWidth);
-    }
+    double minWidth = data.deviceTypeConfig.designMinWidth;
+    double maxWidth = data.deviceTypeConfig.designMaxWidth;
+    if (data.screenWidth <= minWidth) return smallScreenValue;
+    if (data.screenWidth >= maxWidth) return largeScreenValue;
+    return smallScreenValue +
+        (largeScreenValue - smallScreenValue) *
+            (data.screenWidth - minWidth) /
+            (maxWidth - minWidth);
   }
 
-  /// Calculates diagonal size based on the screen size and design dimensions.
-  ///
-  /// This method computes the diagonal size by scaling between a small screen diagonal and a large
-  /// screen diagonal. It uses the screen's diagonal and the design dimensions to return an adapted
-  /// diagonal size.
-  double get d {
-    double designWidthValue = ScreenAdaptiveConfig.instance!.targetDeviceType ==
-            TargetDeviceType.phonePortrait
-        ? ScreenAdaptiveConfig.instance!.designMinWidth
-        : ScreenAdaptiveConfig.instance!.designMaxWidth;
+  /// Scales two values (representing a small-screen dimension) to the current
+  /// screen diagonal.
+  double d(BuildContext context) {
+    final data = FlexiInheritedWidget.of(context);
+    if (data == null) throw Exception('FlexiConfig not found in context.');
+    double designWidthValue =
+        data.deviceTypeConfig.targetDeviceType == TargetDeviceType.phonePortrait
+            ? data.deviceTypeConfig.designMinWidth
+            : data.deviceTypeConfig.designMaxWidth;
     double designHeightValue =
-        ScreenAdaptiveConfig.instance!.targetDeviceType ==
-                TargetDeviceType.phonePortrait
-            ? ScreenAdaptiveConfig.instance!.designMinHeight
-            : ScreenAdaptiveConfig.instance!.designMaxHeight;
-    num width = item1.toDouble();
-    num height = item2.toDouble();
-    double smallScreenDiagonal = sqrt(pow(width, 2) + pow(height, 2));
-    double screenDiagonal = sqrt(
-        pow(ScreenAdaptiveConfig.instance!.screenWidth, 2) +
-            pow(ScreenAdaptiveConfig.instance!.screenHeight, 2));
+        data.deviceTypeConfig.targetDeviceType == TargetDeviceType.phonePortrait
+            ? data.deviceTypeConfig.designMinHeight
+            : data.deviceTypeConfig.designMaxHeight;
+    double smallScreenDiagonal =
+        sqrt(pow(item1.toDouble(), 2) + pow(item2.toDouble(), 2));
+    double screenDiagonal =
+        sqrt(pow(data.screenWidth, 2) + pow(data.screenHeight, 2));
     double screenDesignDiagonal =
         sqrt(pow(designWidthValue, 2) + pow(designHeightValue, 2));
     return (smallScreenDiagonal * screenDiagonal) / screenDesignDiagonal;
   }
 }
 
-/// Provides extension methods for adapting height based on a tuple of values for different screen sizes.
+/// Provides adaptive height extensions for [Tuple2].
 ///
-/// This extension allows you to calculate height values that adapt to screen size variations using
-/// a range of design dimensions and screen height.
+/// Use this for continuous (fluid) scaling between two values based on screen height.
 extension AdaptiveHeightExtension on Tuple2<num, num> {
-  /// Calculates adaptive height based on the screen height and design height values.
+  /// Linearly interpolates between [item1] and [item2] based on the current
+  /// screen height relative to the design height range ([designMinHeight] to [designMaxHeight]).
   ///
-  /// This method interpolates between a small screen value and a large screen value based on the
-  /// current screen height. It returns a height that scales proportionally between the minimum and
-  /// maximum design heights.
-  double get ah {
-    double smallScreenValue = item1.toDouble();
-    double largeScreenValue = item2.toDouble();
-    double minHeight = ScreenAdaptiveConfig.instance!.designMinHeight;
-    double maxHeight = ScreenAdaptiveConfig.instance!.designMaxHeight;
-
-    if (ScreenAdaptiveConfig.instance!.screenHeight < minHeight) {
-      return smallScreenValue;
-    } else if (ScreenAdaptiveConfig.instance!.screenHeight > maxHeight) {
-      return largeScreenValue;
-    } else {
-      return smallScreenValue +
-          (largeScreenValue - smallScreenValue) *
-              (ScreenAdaptiveConfig.instance!.screenHeight - minHeight) /
-              (maxHeight - minHeight);
-    }
+  /// Subscribes only to height changes for maximum performance.
+  double ah(BuildContext context) {
+    final data = FlexiInheritedWidget.of(context, aspect: 'height');
+    if (data == null) throw Exception('FlexiConfig not found in context.');
+    double minHeight = data.deviceTypeConfig.designMinHeight;
+    double maxHeight = data.deviceTypeConfig.designMaxHeight;
+    if (data.screenHeight <= minHeight) return item1.toDouble();
+    if (data.screenHeight >= maxHeight) return item2.toDouble();
+    return item1.toDouble() +
+        (item2.toDouble() - item1.toDouble()) *
+            (data.screenHeight - minHeight) /
+            (maxHeight - minHeight);
   }
 }

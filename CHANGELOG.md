@@ -1,4 +1,18 @@
-## 0.0.1
+## 1.0.0
+
+- **BREAKING CHANGE**: Shifted to high-performance `InheritedWidget` architecture.
+- **BREAKING CHANGE**: Removed legacy static `ScreenAdaptiveConfig` and `ResponsiveCardConfig` singletons.
+- **Feature**: Full `const` constructor support for responsive widgets.
+- **Feature**: Granular rebuilds using `InheritedModel` aspects (widht/height specific).
+- **Feature**:### New Features
+- **Fluid Scaling (Proportional growth)**: Added `.aw(max, context)` and `.ah(max, context)` to `num` class for scaling any value (font, padding, dimensions) between two design points.
+- **Granular Performance**: All fluid scaling extensions now use specialized aspects ('width'/'height') to minimize widget rebuilds.
+- **BreakpointValue<T>**: Utility for discrete, step-based responsiveness (Mobile/Tablet/Desktop).
+- **DPR Awareness**: Automatic scaling based on Device Pixel Ratio.
+- **Post-Cleanup Audit**: Restored and documented `DeviceTypeConfig` and `ScreenInfo`.
+- **Internal**: Removed `LayoutBuilder` dependency in core scaling, reducing `RenderObject` overhead.
+
+## 0.1.0
 
 - **Responsive Widgets**: Automatically adjust widget sizes based on the screen size.
 - **Adaptive Text**: Scale text sizes dynamically.
