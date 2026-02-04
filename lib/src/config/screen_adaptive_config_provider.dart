@@ -8,21 +8,21 @@ import '../../flexi_ui.dart';
 extension SizeExtension on num {
   /// Calculates width based on a percentage of the screen width using context.
   double w(BuildContext context) {
-    final data = FlexiInheritedWidget.of(context, aspect: 'width');
+    final data = FlexiInheritedWidget.of(context, aspect: FlexiAspect.width);
     if (data == null) throw Exception('FlexiConfig not found in context.');
     return this * data.screenWidth;
   }
 
   /// Calculates height based on a percentage of the screen height using context.
   double h(BuildContext context) {
-    final data = FlexiInheritedWidget.of(context, aspect: 'height');
+    final data = FlexiInheritedWidget.of(context, aspect: FlexiAspect.height);
     if (data == null) throw Exception('FlexiConfig not found in context.');
     return this * data.screenHeight;
   }
 
   /// Calculates responsive width using context.
   double rw(BuildContext context) {
-    final data = FlexiInheritedWidget.of(context, aspect: 'width');
+    final data = FlexiInheritedWidget.of(context, aspect: FlexiAspect.width);
     if (data == null) throw Exception('FlexiConfig not found in context.');
     double designWidthValue =
         data.deviceTypeConfig.targetDeviceType == TargetDeviceType.phonePortrait
@@ -33,7 +33,7 @@ extension SizeExtension on num {
 
   /// Calculates responsive height using context.
   double rh(BuildContext context) {
-    final data = FlexiInheritedWidget.of(context, aspect: 'height');
+    final data = FlexiInheritedWidget.of(context, aspect: FlexiAspect.height);
     if (data == null) throw Exception('FlexiConfig not found in context.');
     double designHeightValue =
         data.deviceTypeConfig.targetDeviceType == TargetDeviceType.phonePortrait
@@ -63,7 +63,7 @@ extension AdaptiveWidthExtension on Tuple2<num, num> {
   /// Useful for "Fluid Typography", spacing, or any dimension that should grow proportionally.
   /// Subscribes only to width changes for maximum performance.
   double aw(BuildContext context) {
-    final data = FlexiInheritedWidget.of(context, aspect: 'width');
+    final data = FlexiInheritedWidget.of(context, aspect: FlexiAspect.width);
     if (data == null) throw Exception('FlexiConfig not found in context.');
     double smallScreenValue = item1.toDouble();
     double largeScreenValue = item2.toDouble();
@@ -80,7 +80,8 @@ extension AdaptiveWidthExtension on Tuple2<num, num> {
   /// Scales two values (representing a small-screen dimension) to the current
   /// screen diagonal.
   double d(BuildContext context) {
-    final data = FlexiInheritedWidget.of(context);
+    FlexiInheritedWidget.of(context, aspect: FlexiAspect.width);
+    final data = FlexiInheritedWidget.of(context, aspect: FlexiAspect.height);
     if (data == null) throw Exception('FlexiConfig not found in context.');
     double designWidthValue =
         data.deviceTypeConfig.targetDeviceType == TargetDeviceType.phonePortrait
@@ -109,7 +110,7 @@ extension AdaptiveHeightExtension on Tuple2<num, num> {
   ///
   /// Subscribes only to height changes for maximum performance.
   double ah(BuildContext context) {
-    final data = FlexiInheritedWidget.of(context, aspect: 'height');
+    final data = FlexiInheritedWidget.of(context, aspect: FlexiAspect.height);
     if (data == null) throw Exception('FlexiConfig not found in context.');
     double minHeight = data.deviceTypeConfig.designMinHeight;
     double maxHeight = data.deviceTypeConfig.designMaxHeight;

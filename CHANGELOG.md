@@ -1,3 +1,24 @@
+## 1.1.0 (DX & DevTools Update)
+
+### 🚀 New Features
+- **Semantic Breakpoints**: Introduced the `FlexiBreakpoint` enum (`phonePortrait`, `phoneLandscape`, `tablet`, `desktop`) for intuitive responsive logic.
+- **Nested Responsive Support**: Added `useParentConstraints` to `FlexiConfig`, enabling component-level scaling based on container constraints.
+- **Developer Tools**: Added `FlexiDebugOverlay` for real-time visualization of screen metrics, breakpoints, and orientations.
+- **Semantic Helpers**: Added `context.flexi` extension (`breakpoint`, `screenSize`, `deviceType`) for cleaner access to data.
+- **Type-Safe Aspects**: Replaced aspect strings with the `FlexiAspect` enum for improved DX and typo prevention.
+
+### ⚡ Performance & Correctness
+- **Strict Aspect Mode**: Enforced granular rebuilds. Widgets won't rebuild unless they subscribe to a specific `FlexiAspect`.
+- **Implicit Rebuild Escape Hatch**: Added `allowImplicitRebuilds` flag to `FlexiConfig` for backward compatibility.
+- **Intelligent Orientation**: Refactored orientation logic to be derived from local dimensions, fixing issues in nested/split-screen layouts.
+- **Zero-Warning Architecture**: Refactored all internal helpers and extensions to use explicit aspects, eliminating console noise.
+
+### ⚠️ Breaking Changes
+- `Flexi.of(context)` and `FlexiInheritedWidget.of(context)` now require a `FlexiAspect` enum instead of a `String`.
+- By default, `Flexi.of(context)` without an aspect will NOT trigger a rebuild. Use `context.flexi.breakpoint` or specify an aspect to receive updates.
+
+---
+
 ## 1.0.0
 
 ### ⚠️ Breaking Changes

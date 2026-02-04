@@ -11,6 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const FlexiConfig(
+      showDebugOverlay: true, // NEW: Debug overlay enabled
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         themeMode: ThemeMode.light,
@@ -35,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _rebuildCount++;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Flexi UI Performance Demo'),
+        title: const Text('Flexi UI 1.1.0 Demo'),
         backgroundColor: Colors.deepPurple,
         foregroundColor: Colors.white,
       ),
@@ -44,6 +45,43 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            _buildSectionTitle('Semantic Helpers (context.flexi)'),
+            const SizedBox(height: 10),
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.deepPurple.shade50,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text('Current Breakpoint:'),
+                      Text(
+                        context.flexi.breakpoint.name,
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.deepPurple),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text('Screen Size:'),
+                      Text(
+                        '${context.flexi.screenSize.width.toInt()} x ${context.flexi.screenSize.height.toInt()}',
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 32),
             _buildSectionTitle('Performance Proof (Resize Window!)'),
             const SizedBox(height: 10),
             const Text(
@@ -81,30 +119,32 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(height: 32),
             _buildSectionTitle('Discrete Responsiveness'),
             const SizedBox(height: 10),
-            const Text(
-              'Uses BreakpointValue to change values in steps (+ color change).',
-              style: TextStyle(fontSize: 12, color: Colors.grey),
-            ),
-            const SizedBox(height: 16),
             const BreakpointDemo(),
             const SizedBox(height: 32),
-            const SizedBox(height: 32),
             _buildSectionTitle('Fluid Scaling (Proportional)'),
-            const SizedBox(height: 10),
-            const Text(
-              'Uses Tuple2.aw(context) to scale values proportionally between 360px and 1440px width.',
-              style: TextStyle(fontSize: 12, color: Colors.grey),
-            ),
             const SizedBox(height: 16),
             const FluidScalingDemo(),
             const SizedBox(height: 32),
-            _buildSectionTitle('Nested Parent Scaling'),
+            _buildSectionTitle('Nested Responsive Layouts'),
             const SizedBox(height: 10),
-            const ResponsiveLayout(
-              targetWidth: 400,
-              child: Padding(
-                padding: EdgeInsets.all(16.0),
-                child: ColorGrid(),
+            const Text(
+              'This container uses FlexiConfig(useParentConstraints: true) to scale its children based on ITSELF, not the screen.',
+              style: TextStyle(fontSize: 12, color: Colors.grey),
+            ),
+            const SizedBox(height: 16),
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(2),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey.shade300),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: const FlexiConfig(
+                useParentConstraints: true,
+                child: Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: ColorGrid(),
+                ),
               ),
             ),
             const SizedBox(height: 40),

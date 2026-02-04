@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 
+import '../constants/flexi_breakpoint.dart';
 import 'device_type_config.dart';
 
 /// Immutable data holding screen adaptation values provided by [FlexiConfig].
@@ -35,6 +36,9 @@ class ScreenAdaptiveData {
   /// Detailed configuration and classification for the current device.
   final DeviceTypeConfig deviceTypeConfig;
 
+  /// The semantic breakpoint category for the current screen width.
+  final FlexiBreakpoint breakpoint;
+
   const ScreenAdaptiveData({
     required this.screenWidth,
     required this.screenHeight,
@@ -45,6 +49,7 @@ class ScreenAdaptiveData {
     required this.safeBlockHorizontal,
     required this.safeBlockVertical,
     required this.deviceTypeConfig,
+    required this.breakpoint,
   });
 
   @override
@@ -54,10 +59,16 @@ class ScreenAdaptiveData {
         other.screenWidth == screenWidth &&
         other.screenHeight == screenHeight &&
         other.orientation == orientation &&
-        other.devicePixelRatio == devicePixelRatio;
+        other.devicePixelRatio == devicePixelRatio &&
+        other.breakpoint == breakpoint;
   }
 
   @override
-  int get hashCode =>
-      Object.hash(screenWidth, screenHeight, orientation, devicePixelRatio);
+  int get hashCode => Object.hash(
+        screenWidth,
+        screenHeight,
+        orientation,
+        devicePixelRatio,
+        breakpoint,
+      );
 }

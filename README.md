@@ -1,142 +1,150 @@
-# Flutter Flexi UI
+# Flexi UI 🚀
 
-**High-Performance, Context-Aware, and SOLID Responsive Design for Flutter.**
+**The Most Performant, Type-Safe, and Developer-Friendly Responsive Framework for Flutter.**
 
-Flexi UI is a modern responsive framework designed to solve the common pitfalls of existing packages like `screen_util`. It provides a declarative, `InheritedWidget`-based architecture that allows for **full `const` constructor support**, **high-performance granular rebuilds**, and clean, maintainable code.
+[![Pub Version](https://img.shields.io/pub/v/flexi_ui?color=blue)](https://pub.dev/packages/flexi_ui)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/akshaySavanoor/flutter_flexi/blob/main/LICENSE)
+[![Flutter](https://img.shields.io/badge/flutter-framework-blue.svg)](https://flutter.dev)
 
-## 🚀 Key Advantages
+Flexi UI is a high-performance **Flutter responsive UI framework** for building scalable, adaptive layouts on **Mobile, Tablet, and Desktop** using a clean, type-safe `InheritedModel` architecture.
 
-- **Full `const` Support**: Unlike other packages, Flexi UI works perfectly with `const` widgets, allowing Flutter to cache your UI tree and skip unnecessary builds.
-- **Granular Rebuilds (Aspects)**: Using `InheritedModel`, widgets only rebuild when the specific dimension they care about (width or height) actually changes.
-- **Zero LayoutBuilder Overhead**: By eliminating the need for deeply nested `LayoutBuilder` widgets, you reduce `RenderObject` calculation time significantly.
-- **Directional Awareness**: Separate `width` and `height` tracking ensures high-fidelity scaling.
-- **SOLID Design**: Decouples responsive logic from global state, making your widgets testable and predictable.
+## Flutter Responsive Alternatives
+
+Flexi UI is an alternative to:
+- flutter_screenutil
+- responsive_framework
+- layout_builder
+- mediaquery-based layouts
+
+Unlike these, Flexi UI provides:
+- granular rebuild control
+- const-safe widgets
+- semantic breakpoints
+- nested responsive contexts
+---
+
+## When Should You Use Flexi UI?
+
+Use Flexi UI if you are:
+- building Flutter apps for Web + Desktop
+- maintaining large design systems
+- struggling with MediaQuery rebuilds
+- tired of screen_util breaking const widgets
+
+## 🌟 Why Flexi UI?
+
+- **⚡ Blazing Performance**: Built on `InheritedModel`. Widgets only rebuild when the specific dimension they subscribe to (width, height, or breakpoint) actually changes.
+- **🏗️ SOLID Architecture**: Decouples UI from device-specific magic numbers. Designed for testability and maintainability.
+- **✨ Full `const` Support**: Unlike `screen_util`, Flexi UI does not require global mutable state, so `const` widgets remain valid and optimizable.
+- **🛡️ Type-Safe Aspects**: No more magic strings! Use the `FlexiAspect` enum to precisely control when your widgets rebuild.
+- **🔍 Debug Overlay**: Built-in visual tools to see your screen metrics, breakpoints, and orientations in real-time.
+- **📦 Minimal Dependencies: Lightweight and focused (only depends on `tuple`).**
+
+---
 
 ## ⚙️ Core Concepts
 
-### 1. Root Configuration
-Wrap your `MaterialApp` in a `FlexiConfig` widget. This replaces the old imperative initialization.
+### 1. The Root: `FlexiConfig`
+Wrap your `MaterialApp` with `FlexiConfig`. This provides responsive context to your entire application.
 
 ```dart
 void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
-    return const FlexiConfig( // High performance!
-      child: MaterialApp(
-        home: HomeScreen(),
-      ),
+    return const FlexiConfig(
+      showDebugOverlay: true, // Perfect for development!
+      child: MaterialApp(home: HomeScreen()),
     );
   }
 }
 ```
 
-### 2. Context-Aware Extensions
-Access responsive values using the `BuildContext`. This allows Flutter to track the dependency correctly.
-
-| Extension | Purpose | Example |
-| :--- | :--- | :--- |
-| `.w(context)` | % of Screen Width | `0.5.w(context)` |
-| `.h(context)` | % of Screen Height | `0.2.h(context)` |
-| `.rw(context)` | Scaled Width (Design) | `100.rw(context)` |
-| `.aw(context)` | Adaptive (Tuple-based) | `const Tuple2(12, 40).aw(context)` |
-
-### 3. Parent-Relative Responsiveness
-Need a card to scale its children based on *its* size rather than the whole screen? Use `ResponsiveLayout`.
+### 2. Semantic Breakpoints
+Flexi UI categorizes screens into semantic buckets. Stop checking for `width > 600` and start thinking in device types.
 
 ```dart
-const ResponsiveLayout(
-  targetWidth: 300,
-  child: MyResponsiveCard(), // Inside, use .fw(context)
-)
+if (context.flexi.breakpoint == FlexiBreakpoint.desktop) {
+  return SidebarLayout();
+}
 ```
 
-## 🔄 Migration Guide (0.x -> 1.0.0)
+### 3. Granular Subscriptions (The Performance Secret)
+Avoid the "Whole Screen Rebuild" problem. Subscribe only to what you need.
 
-Version 1.0.0 is a planned breaking change to ensure high performance and SOLID principles.
-
-### 1. Root Setup
-**Old (Imperative):**
 ```dart
-ScreenAdaptiveConfig.init(context: context, orientation: orientation);
+// Rebuilds ONLY when width changes
+final width = context.flexi.screenSize.width; 
+
+// Rebuilds ONLY when the breakpoint (Mobile -> Tablet) changes
+final bp = context.flexi.breakpoint; 
 ```
-**New (Declarative):**
-```dart
-const FlexiConfig(child: MaterialApp(...));
-```
-
-### 2. Extension Methods
-All responsive extensions now require the `BuildContext` to enable granular updates. Remove `_legacy` suffixes.
-
-| Old (v0.x) | New (v1.0.0) |
-| :--- | :--- |
-| `100.w` | `100.w(context)` |
-| `100.rw` | `100.rw(context)` |
-| `Tuple2(12, 40).aw` | `Tuple2(12, 40).aw(context)` |
-| `10.fw` | `10.fw(context)` |
-
-> [!TIP]
-> Use **Command + .** (VS Code) or **Alt + Enter** (Android Studio) to quickly add `context` to your extensions.
-
-### 3. Parent-Relative Scaling
-**Old**: Used `LayoutBuilder` manually with `ResponsiveCardConfig`.  
-**New**: Wrap your widget in `ResponsiveLayout`.
 
 ---
 
-## 🛠 Advanced Features
+## 📐 Adaptive Scaling
 
-### Discrete Breakpoints
-Use `BreakpointValue` to provide specific values for different device types instead of linear scaling.
+| Method | Description | Example                                      |
+| :--- | :--- |:---------------------------------------------|
+| `.w(context)` | % of Screen Width | `0.5.w(context)` (Fraction of Screen Width)  |
+| `.h(context)` | % of Screen Height | `0.2.h(context)` (Fraction of Screen Height) |
+| `.rw(context)` | Design-Width Scaled | `100.rw(context)`                            |
+| `.aw(max, context)`| **Fluid Scaling** | `16.aw(32, context)` (Font scales 16->32)    |
+| `.fw(context)` | **Nested (Card) Scaling** | `10.fw(context)` (Scales relative to parent) |
 
-```dart
-const columns = BreakpointValue<int>(
-  mobile: 2,
-  tablet: 4,
-  desktop: 6,
-);
+---
 
-// Resolve it anywhere
-int current = columns.v(context);
-```
+## 🛠 Advanced Tools
 
-### 🌊 Universal Fluid Scaling (Continuous)
-Sometimes you want values to grow proportionally between your mobile and desktop designs. This isn't just for typography—it works for **padding, margins, spacing, and any numeric dimension**.
-
-Use the `.aw(max, context)` extension for width-based scaling or `.ah(max, context)` for height-based scaling.
+### 🌊 Universal Fluid Scaling
+Smoothly transition font sizes, padding, and spacing between your mobile design and desktop design.
 
 ```dart
-Column(
-  children: [
-    Padding(
-      padding: EdgeInsets.all(16.aw(32, context)), // Fluid padding: 16 -> 32
-      child: Text(
-        'Fluid EVERYTHING',
-        style: TextStyle(
-          fontSize: 18.aw(36, context), // Fluid font: 18 -> 36
-        ),
-      ),
-    ),
-    SizedBox(height: 10.aw(20, context)), // Fluid spacing: 10 -> 20
-  ],
+Padding(
+  padding: EdgeInsets.all(16.aw(32, context)), // Scales between 16 and 32
+  child: Text(
+    'Fluid Typography',
+    style: TextStyle(fontSize: 18.aw(32, context)),
+  ),
 )
 ```
 
-> [!IMPORTANT]
-> **Performance Optimized**: `aw` only subscribes to 'width' changes, and `ah` only to 'height' changes. Your widgets won't rebuild unnecessarily if other screen properties (like pixel ratio) change.
+### 📦 Nested Responsive Support
+Need a specific widget (like a Dialog or Side Panel) to have its own responsive context?
 
-### Device Pixel Ratio Awareness
-Flexi UI is sensitive to DPR, ensuring that your UI looks crisp and scaled correctly even when moving apps between high-density and low-density displays.
+```dart
+FlexiConfig(
+  useParentConstraints: true, // Scales children relative to this container
+  child: MyComponent(),
+)
+```
 
-## 📊 Performance Visualization
-The new architecture ensures that "Heavy Widgets" (expensive to build) can be marked as `const`. As long as they don't use the responsive extensions themselves, they will **remain cached** even while other parts of the UI scale dynamically.
+### 🐞 Debug Overlay
+Enable `showDebugOverlay: true` to see a floating panel with:
+- Current Width & Height
+- Semantic Breakpoint
+- Orientation & DPR
+- Target Device Type
+
+---
+
+## 🔄 Migration to v1.1.0
+
+Version 1.1.0 introduces **Type-Safe Aspects** and **Strict Performance Mode**.
+
+- **Type safety**: Replace `aspect: 'width'` with `aspect: FlexiAspect.width`.
+- **Strict Mode**: By default, `Flexi.of(context)` without an aspect will NOT trigger rebuilds.
+- **Fix**: Use `context.flexi.screenSize` or specify an aspect to receive updates.
+
+> [!TIP]
+> If you need backward compatibility, set `allowImplicitRebuilds: true` in your root `FlexiConfig`.
+
+---
 
 ## 🤝 Community & Support
 
 - **Bugs/Issues**: [Open an Issue](https://github.com/akshaySavanoor/flutter_flexi/issues)
 - **Contributions**: [Submit a PR](https://github.com/akshaySavanoor/flutter_flexi/pulls)
 
-Made with ❤️ for the Flutter Community.
+Made with ❤️ by [Akshay Savanoor](https://github.com/akshaySavanoor)

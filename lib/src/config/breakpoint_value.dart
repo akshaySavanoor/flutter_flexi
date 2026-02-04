@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 
+import '../constants/flexi_aspect.dart';
 import '../widgets/flexi_config.dart';
 
 /// A class that provides a value based on the current screen size breakpoints.
@@ -38,7 +39,8 @@ class BreakpointValue<T> {
   ///
   /// Priority: Desktop -> Tablet/Landscape -> Mobile.
   T resolve(BuildContext context) {
-    final data = FlexiInheritedWidget.of(context);
+    final data =
+        FlexiInheritedWidget.of(context, aspect: FlexiAspect.breakpoint);
     if (data == null) return mobile;
 
     final config = data.deviceTypeConfig;
