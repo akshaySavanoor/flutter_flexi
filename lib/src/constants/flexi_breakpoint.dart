@@ -4,10 +4,10 @@
 /// (e.g., `if (breakpoint == FlexiBreakpoint.tablet)`) rather than raw numbers.
 enum FlexiBreakpoint {
   /// Small phone in portrait mode.
-  phonePortrait,
+  mobilePortrait,
 
   /// Large phone or small tablet in landscape mode.
-  phoneLandscape,
+  mobileLandscape,
 
   /// Tablet in landscape mode or small desktop window.
   tablet,

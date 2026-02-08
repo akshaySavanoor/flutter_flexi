@@ -7,7 +7,7 @@ import '../../flexi_ui.dart';
 /// This allows widgets to subscribe to changes in responsive configuration.
 /// Using [InheritedModel] allows for granular rebuilds, though in this specific case,
 /// width and height changes usually happen together.
-class ResponsiveInheritedModel extends InheritedModel<String> {
+class ResponsiveInheritedModel extends InheritedModel<FlexiAspect> {
   final ResponsiveCardData data;
 
   const ResponsiveInheritedModel({
@@ -16,7 +16,7 @@ class ResponsiveInheritedModel extends InheritedModel<String> {
     required super.child,
   });
 
-  static ResponsiveCardData? of(BuildContext context, {String? aspect}) {
+  static ResponsiveCardData? of(BuildContext context, {FlexiAspect? aspect}) {
     return InheritedModel.inheritFrom<ResponsiveInheritedModel>(context,
             aspect: aspect)
         ?.data;
@@ -30,18 +30,18 @@ class ResponsiveInheritedModel extends InheritedModel<String> {
   @override
   bool updateShouldNotifyDependent(
     ResponsiveInheritedModel oldWidget,
-    Set<String> dependencies,
+    Set<FlexiAspect> dependencies,
   ) {
-    if (dependencies.contains('width') &&
+    if (dependencies.contains(FlexiAspect.width) &&
         data.currentParentWidth != oldWidget.data.currentParentWidth) {
       return true;
     }
-    if (dependencies.contains('height') &&
+    if (dependencies.contains(FlexiAspect.height) &&
         data.currentParentHeight != oldWidget.data.currentParentHeight) {
       return true;
     }
     // If no specific aspect is requested, rebuild on any data change
-    if (dependencies.isEmpty) {
+    if (dependencies.isEmpty || dependencies.contains(FlexiAspect.implicit)) {
       return data != oldWidget.data;
     }
     return false;

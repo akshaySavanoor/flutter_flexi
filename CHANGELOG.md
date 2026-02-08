@@ -1,3 +1,19 @@
+## 1.2.0 (Production Hardening & Elite Example)
+
+### 🛠 Hardening & Reliability
+- **FlexiGrid Stability**: Refactored `FlexiGrid` to consistently use grid-based logic even in unconstrained contexts (dialogs, scroll views). Removed `Wrap` fallback for more predictable layouts.
+- **Infinite Width Safety**: Implemented `safeWidth` calculation in `FlexiGrid` using screen fallbacks when parent constraints are infinite.
+- **FlexiHelper Expansion**: Added `orientation`, `devicePixelRatio`, `screenWidth`, and `screenHeight` to `context.flexi` for improved developer experience.
+- **Fluid Math Safety**: Added `max(1.0, divisor)` to linear interpolation methods to prevent `DivisionByZero` errors in extreme edge cases.
+
+### 🍱 Production Example App
+- **Project Overhaul**: Replaced the single-file demo with a realistic, multi-screen example application using production UI patterns.
+- **Screen Showcase**: Added Dashboard, List-Detail (Split-Pane), Responsive Form, and Diagnostics screens.
+- **Performance Audit**: Verified `InheritedModel` scoping with automated rebuild tracking tests.
+
+### 📚 Documentation
+- **Production Guide**: Rewrote `README.md` with a focus on production best practices and enterprise-grade implementation patterns.
+
 ## 1.1.0 (DX & DevTools Update)
 
 ### 🚀 New Features

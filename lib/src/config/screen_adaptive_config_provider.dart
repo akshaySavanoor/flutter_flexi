@@ -25,10 +25,11 @@ extension SizeExtension on num {
     final data = FlexiInheritedWidget.of(context, aspect: FlexiAspect.width);
     if (data == null) throw Exception('FlexiConfig not found in context.');
     double designWidthValue =
-        data.deviceTypeConfig.targetDeviceType == TargetDeviceType.phonePortrait
+        data.deviceTypeConfig.targetDeviceType == TargetDeviceType.mobilePortrait
             ? data.deviceTypeConfig.designMinWidth
             : data.deviceTypeConfig.designMaxWidth;
-    return (this * data.screenWidth) / designWidthValue;
+    assert(designWidthValue > 0, 'Design width must be greater than zero.');
+    return (this * data.screenWidth) / max(1.0, designWidthValue);
   }
 
   /// Calculates responsive height using context.
@@ -36,10 +37,11 @@ extension SizeExtension on num {
     final data = FlexiInheritedWidget.of(context, aspect: FlexiAspect.height);
     if (data == null) throw Exception('FlexiConfig not found in context.');
     double designHeightValue =
-        data.deviceTypeConfig.targetDeviceType == TargetDeviceType.phonePortrait
+        data.deviceTypeConfig.targetDeviceType == TargetDeviceType.mobilePortrait
             ? data.deviceTypeConfig.designMinHeight
             : data.deviceTypeConfig.designMaxHeight;
-    return (this * data.screenHeight) / designHeightValue;
+    assert(designHeightValue > 0, 'Design height must be greater than zero.');
+    return (this * data.screenHeight) / max(1.0, designHeightValue);
   }
 
   /// Linearly interpolates from this value to [max] based on the current
@@ -71,10 +73,14 @@ extension AdaptiveWidthExtension on Tuple2<num, num> {
     double maxWidth = data.deviceTypeConfig.designMaxWidth;
     if (data.screenWidth <= minWidth) return smallScreenValue;
     if (data.screenWidth >= maxWidth) return largeScreenValue;
+
+    final divisor = maxWidth - minWidth;
+    assert(divisor > 0, 'Design width range must be positive.');
+
     return smallScreenValue +
         (largeScreenValue - smallScreenValue) *
             (data.screenWidth - minWidth) /
-            (maxWidth - minWidth);
+            max(1.0, divisor);
   }
 
   /// Scales two values (representing a small-screen dimension) to the current
@@ -84,11 +90,11 @@ extension AdaptiveWidthExtension on Tuple2<num, num> {
     final data = FlexiInheritedWidget.of(context, aspect: FlexiAspect.height);
     if (data == null) throw Exception('FlexiConfig not found in context.');
     double designWidthValue =
-        data.deviceTypeConfig.targetDeviceType == TargetDeviceType.phonePortrait
+        data.deviceTypeConfig.targetDeviceType == TargetDeviceType.mobilePortrait
             ? data.deviceTypeConfig.designMinWidth
             : data.deviceTypeConfig.designMaxWidth;
     double designHeightValue =
-        data.deviceTypeConfig.targetDeviceType == TargetDeviceType.phonePortrait
+        data.deviceTypeConfig.targetDeviceType == TargetDeviceType.mobilePortrait
             ? data.deviceTypeConfig.designMinHeight
             : data.deviceTypeConfig.designMaxHeight;
     double smallScreenDiagonal =
@@ -97,7 +103,9 @@ extension AdaptiveWidthExtension on Tuple2<num, num> {
         sqrt(pow(data.screenWidth, 2) + pow(data.screenHeight, 2));
     double screenDesignDiagonal =
         sqrt(pow(designWidthValue, 2) + pow(designHeightValue, 2));
-    return (smallScreenDiagonal * screenDiagonal) / screenDesignDiagonal;
+    assert(screenDesignDiagonal > 0, 'Design diagonal must be greater than zero.');
+
+    return (smallScreenDiagonal * screenDiagonal) / max(1.0, screenDesignDiagonal);
   }
 }
 

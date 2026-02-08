@@ -1,6 +1,6 @@
+import 'package:flexi_ui/flexi_ui.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flexi_ui/flexi_ui.dart';
 
 void main() {
   group('DeviceTypeConfig', () {
@@ -8,7 +8,7 @@ void main() {
       const info = ScreenInfo(
         width: 360,
         height: 640,
-        mobilePortraitBreakpoint: 480,
+        mobilePortraitBreakpoint: 600,
         mobileLandscapeBreakpoint: 768,
         tabletLandscapeBreakpoint: 1024,
         orientation: Orientation.portrait,
@@ -19,11 +19,11 @@ void main() {
         designMaxWidth: 1440,
         designMinHeight: 480,
         designMaxHeight: 1024,
-        targetDeviceType: TargetDeviceType.phonePortrait,
+        targetDeviceType: TargetDeviceType.mobilePortrait,
       );
 
-      expect(config.isPhonePortrait, isTrue);
-      expect(config.isPhoneLandscape, isFalse);
+      expect(config.isMobilePortrait, isTrue);
+      expect(config.isMobileLandscape, isFalse);
       expect(config.isTabletLandscape, isFalse);
       expect(config.isDesktop, isFalse);
     });
@@ -43,11 +43,11 @@ void main() {
         designMaxWidth: 1440,
         designMinHeight: 480,
         designMaxHeight: 1024,
-        targetDeviceType: TargetDeviceType.phonePortrait,
+        targetDeviceType: TargetDeviceType.mobilePortrait,
       );
 
-      expect(config.isPhonePortrait, isFalse);
-      expect(config.isPhoneLandscape, isTrue);
+      expect(config.isMobilePortrait, isFalse);
+      expect(config.isMobileLandscape, isTrue);
       expect(config.isTabletLandscape, isFalse);
       expect(config.isDesktop, isFalse);
     });
@@ -67,11 +67,11 @@ void main() {
         designMaxWidth: 1440,
         designMinHeight: 480,
         designMaxHeight: 1024,
-        targetDeviceType: TargetDeviceType.phonePortrait,
+        targetDeviceType: TargetDeviceType.mobilePortrait,
       );
 
-      expect(config.isPhonePortrait, isFalse);
-      expect(config.isPhoneLandscape, isFalse);
+      expect(config.isMobilePortrait, isFalse);
+      expect(config.isMobileLandscape, isFalse);
       expect(config.isTabletLandscape, isTrue);
       expect(config.isDesktop, isFalse);
     });
@@ -91,11 +91,11 @@ void main() {
         designMaxWidth: 1440,
         designMinHeight: 480,
         designMaxHeight: 1024,
-        targetDeviceType: TargetDeviceType.phonePortrait,
+        targetDeviceType: TargetDeviceType.mobilePortrait,
       );
 
-      expect(config.isPhonePortrait, isFalse);
-      expect(config.isPhoneLandscape, isFalse);
+      expect(config.isMobilePortrait, isFalse);
+      expect(config.isMobileLandscape, isFalse);
       expect(config.isTabletLandscape, isFalse);
       expect(config.isDesktop, isTrue);
     });

@@ -49,26 +49,27 @@ class _OverlayContent extends StatelessWidget {
     // Yes, FlexiConfig structure: FlexiInheritedWidget(child: FlexiDebugOverlay(child: userChild))
     // So context here can access FlexiInheritedWidget.
 
-    // Subscribe to all aspects to ensure the overlay always shows current data
-    final data = Flexi.of(context, aspect: FlexiAspect.breakpoint);
-    if (data == null) return const SizedBox.shrink();
-    data.screenWidth;
-    data.screenHeight;
-    data.devicePixelRatio;
+    // Subscribe to width and height for live updates
+    final data = Flexi.of(context, aspect: FlexiAspect.width);
+    Flexi.of(context, aspect: FlexiAspect.height);
+
+    final config = data.deviceTypeConfig;
+    final scaleW = data.screenWidth / config.designMinWidth;
+    final scaleH = data.screenHeight / config.designMinHeight;
 
     return Container(
       margin: const EdgeInsets.all(8),
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
-        color: Colors.black.withOpacity(0.7),
+        color: Colors.black.withAlpha(200),
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.white.withOpacity(0.3)),
+        border: Border.all(color: Colors.white.withAlpha(80)),
       ),
       child: DefaultTextStyle(
         style: const TextStyle(
           color: Colors.white,
-          fontSize: 12,
-          fontFamily: 'Courier',
+          fontSize: 10,
+          fontFamily: 'monospace',
           fontWeight: FontWeight.w500,
           decoration: TextDecoration.none,
         ),
@@ -81,15 +82,17 @@ class _OverlayContent extends StatelessWidget {
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Colors.blueAccent,
+                fontSize: 11,
               ),
             ),
-            const SizedBox(height: 4),
+            const Divider(color: Colors.white24, height: 8),
             _Row('Size',
-                '${data.screenWidth.toStringAsFixed(1)} x ${data.screenHeight.toStringAsFixed(1)}'),
+                '${data.screenWidth.toInt()} x ${data.screenHeight.toInt()}'),
             _Row('Breakpoint', data.breakpoint.name),
-            _Row('Device', data.deviceTypeConfig.targetDeviceType.name),
+            _Row('Scale W', scaleW.toStringAsFixed(2)),
+            _Row('Scale H', scaleH.toStringAsFixed(2)),
+            _Row('DPR', data.devicePixelRatio.toStringAsFixed(1)),
             _Row('Orient', data.orientation.name),
-            _Row('DPR', data.devicePixelRatio.toStringAsFixed(2)),
           ],
         ),
       ),
@@ -112,7 +115,7 @@ class _Row extends StatelessWidget {
         children: [
           Text(
             '$label: ',
-            style: TextStyle(color: Colors.white.withOpacity(0.7)),
+            style: const TextStyle(color: Color.fromARGB(179, 255, 255, 255)),
           ),
           Text(value),
         ],

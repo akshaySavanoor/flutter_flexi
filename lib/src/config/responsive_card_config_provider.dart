@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/widgets.dart';
 
 import '../constants/constants.dart';
@@ -10,7 +11,7 @@ extension AdaptiveSizeProvider on num {
   /// Calculates the adaptive width based on the current parent width and target parent width
   /// using the [ResponsiveLayout] context.
   double fw(BuildContext context) {
-    final cardData = ResponsiveInheritedModel.of(context, aspect: 'width');
+    final cardData = ResponsiveInheritedModel.of(context, aspect: FlexiAspect.width);
     if (cardData != null) {
       return (cardData.currentParentWidth * this) / cardData.targetParentWidth;
     }
@@ -19,10 +20,11 @@ extension AdaptiveSizeProvider on num {
         FlexiInheritedWidget.of(context, aspect: FlexiAspect.width);
     if (flexiData != null) {
       double designWidth = flexiData.deviceTypeConfig.targetDeviceType ==
-              TargetDeviceType.phonePortrait
+              TargetDeviceType.mobilePortrait
           ? flexiData.deviceTypeConfig.designMinWidth
           : flexiData.deviceTypeConfig.designMaxWidth;
-      return (flexiData.screenWidth * this) / designWidth;
+      assert(designWidth > 0, 'Design width must be greater than zero.');
+      return (flexiData.screenWidth * this) / max(1.0, designWidth);
     }
 
     throw Exception(
@@ -32,7 +34,7 @@ extension AdaptiveSizeProvider on num {
   /// Calculates the adaptive height based on the current parent height and target parent height
   /// using the [ResponsiveLayout] or [FlexiConfig] context.
   double fh(BuildContext context) {
-    final cardData = ResponsiveInheritedModel.of(context, aspect: 'height');
+    final cardData = ResponsiveInheritedModel.of(context, aspect: FlexiAspect.height);
     if (cardData != null) {
       return (cardData.currentParentHeight * this) /
           cardData.targetParentHeight;
@@ -42,10 +44,11 @@ extension AdaptiveSizeProvider on num {
         FlexiInheritedWidget.of(context, aspect: FlexiAspect.height);
     if (flexiData != null) {
       double designHeight = flexiData.deviceTypeConfig.targetDeviceType ==
-              TargetDeviceType.phonePortrait
+              TargetDeviceType.mobilePortrait
           ? flexiData.deviceTypeConfig.designMinHeight
           : flexiData.deviceTypeConfig.designMaxHeight;
-      return (flexiData.screenHeight * this) / designHeight;
+      assert(designHeight > 0, 'Design height must be greater than zero.');
+      return (flexiData.screenHeight * this) / max(1.0, designHeight);
     }
 
     throw Exception(

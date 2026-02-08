@@ -67,9 +67,9 @@ void main() {
         ),
       );
 
-      final container = tester.widget<Container>(find.byType(Container));
-      expect(container.constraints!.minWidth, 200);
-      expect(container.constraints!.minHeight, 100);
+      final container = tester.widget<SizedBox>(find.byType(SizedBox).last);
+      expect(container.width, 200);
+      expect(container.height, 100);
     });
 
     testWidgets('updates when parent size changes', (tester) async {

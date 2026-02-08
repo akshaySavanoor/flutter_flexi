@@ -68,36 +68,62 @@ class FlexiHelper {
   }
 
   /// The current screen size in logical pixels.
-  ///
-  /// Triggers a rebuild when width or height changes.
-  Size get screenSize {
-    // We listen to both width and height.
-    // InheritedModel.inheritFrom allows only one aspect string usually,
-    // or we call it twice? Calling it twice registers two dependencies.
-    // Optimization: 'size' aspect?
-    // But our updateShouldNotifyDependent handles 'width' and 'height'.
-    // Let's just subscribe to nothing specific (full rebuild) or 'width' and 'height'.
-    // The current implementation of updateShouldNotifyDependent checks for 'width' OR 'height'.
-    // So if we pass 'width', we get rebuilds on width change.
-    
-    // Better: let's add 'size' aspect to FlexiInheritedWidget logic if we want strictness,
-    // or just assume getting screenSize implies caring about dimensions.
-    
-    // For now, let's just use the raw data lookup which implicitly rebuilds
-    // if we don't assume strict 'allowImplicitRebuilds = false' for this helper.
-    // Wait, we ENFORCED explicit aspects.
-    
-    // So `FlexiInheritedWidget.of(_context)` with no aspect returns data,
-    // but in strict mode, it WON'T trigger rebuilds if we return false in updateShouldNotifyDependent!
-    
-    // CORRECT FIX: We must specify aspects.
-    FlexiInheritedWidget.of(_context, aspect: FlexiAspect.width);
-    final data = FlexiInheritedWidget.of(_context, aspect: FlexiAspect.height);
-    
+  Size get screenSize => Size(screenWidth, screenHeight);
+
+  /// The current screen width in logical pixels.
+  double get screenWidth {
+    final data = FlexiInheritedWidget.of(_context, aspect: FlexiAspect.width);
     if (data == null) {
       throw FlutterError(
           'FlexiConfig not found in context. Make sure to wrap your app with FlexiConfig.');
     }
-    return Size(data.screenWidth, data.screenHeight);
+    return data.screenWidth;
   }
+
+  /// The current screen height in logical pixels.
+  double get screenHeight {
+    final data = FlexiInheritedWidget.of(_context, aspect: FlexiAspect.height);
+    if (data == null) {
+      throw FlutterError(
+          'FlexiConfig not found in context. Make sure to wrap your app with FlexiConfig.');
+    }
+    return data.screenHeight;
+  }
+
+  /// The current device pixel ratio.
+  double get devicePixelRatio {
+    final data = FlexiInheritedWidget.of(_context, aspect: FlexiAspect.pixelRatio);
+    if (data == null) {
+      throw FlutterError(
+          'FlexiConfig not found in context. Make sure to wrap your app with FlexiConfig.');
+    }
+    return data.devicePixelRatio;
+  }
+
+  /// The current device orientation.
+  Orientation get orientation {
+    // Orientation depends on width/height implicitly in our model
+    final data = FlexiInheritedWidget.of(_context, aspect: FlexiAspect.width);
+    if (data == null) {
+      throw FlutterError(
+          'FlexiConfig not found in context. Make sure to wrap your app with FlexiConfig.');
+    }
+    return data.orientation;
+  }
+
+  /// Whether the current device is categorized as mobile.
+  bool get isMobile => breakpoint == FlexiBreakpoint.mobilePortrait || 
+                       breakpoint == FlexiBreakpoint.mobileLandscape;
+
+  /// Whether the current device is categorized as a tablet.
+  bool get isTablet => breakpoint == FlexiBreakpoint.tablet;
+
+  /// Whether the current device is categorized as a desktop.
+  bool get isDesktop => breakpoint == FlexiBreakpoint.desktop;
+
+  /// Whether the screen is in portrait orientation.
+  bool get isPortrait => orientation == Orientation.portrait;
+
+  /// Whether the screen is in landscape orientation.
+  bool get isLandscape => orientation == Orientation.landscape;
 }

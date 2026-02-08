@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
 import '../config/device_type_config.dart';
+import '../config/flexi_design_config.dart';
 import '../config/screen_adaptive_data.dart';
 import '../constants/constants.dart';
 import '../constants/flexi_aspect.dart';
@@ -14,6 +15,15 @@ import 'flexi_debug_overlay.dart';
 /// to enable responsive scaling across the entire project. It captures [MediaQuery] changes
 /// and provides granular rebuilds via the 'width', 'height', 'pixelRatio', and 'breakpoint' aspects.
 class FlexiConfig extends StatelessWidget {
+  static FlexiInheritedWidget of(BuildContext context) {
+    final widget = context.dependOnInheritedWidgetOfExactType<FlexiInheritedWidget>();
+    if (widget == null) {
+      throw FlutterError(
+          'FlexiConfig not found in context. Make sure to wrap your app with FlexiConfig.');
+    }
+    return widget;
+  }
+
   /// The widget below this widget in the tree.
   final Widget child;
 
@@ -65,6 +75,15 @@ class FlexiConfig extends StatelessWidget {
   /// Defaults to `false`.
   final bool allowImplicitRebuilds;
 
+  /// Custom spacing configuration.
+  final FlexiSpacingConfig spacing;
+
+  /// Custom typography configuration.
+  final FlexiTypographyConfig typography;
+
+  /// Custom icon size configuration.
+  final FlexiIconConfig icons;
+
   const FlexiConfig({
     super.key,
     required this.child,
@@ -72,13 +91,16 @@ class FlexiConfig extends StatelessWidget {
     this.designMaxWidth = 1440,
     this.designMinHeight = 480,
     this.designMaxHeight = 1024,
-    this.mobilePortraitBreakpoint = 480,
+    this.mobilePortraitBreakpoint = 600,
     this.mobileLandscapeBreakpoint = 768,
-    this.tabletLandscapeBreakpoint = 1024,
-    this.targetDevice = TargetDeviceType.phonePortrait,
+    this.tabletLandscapeBreakpoint = 1100,
+    this.targetDevice = TargetDeviceType.mobilePortrait,
     this.useParentConstraints = false,
     this.showDebugOverlay = false,
     this.allowImplicitRebuilds = false,
+    this.spacing = FlexiSpacingConfig.defaultConfig,
+    this.typography = FlexiTypographyConfig.defaultConfig,
+    this.icons = FlexiIconConfig.defaultConfig,
   });
 
   @override
@@ -116,11 +138,40 @@ class FlexiConfig extends StatelessWidget {
     required double width,
     required double height,
   }) {
+    // Audit Safeties
+    assert(designMinWidth > 0, 'designMinWidth must be greater than zero');
+    assert(designMaxWidth >= designMinWidth, 'designMaxWidth must be >= designMinWidth');
+    assert(mobilePortraitBreakpoint > 0, 'mobilePortraitBreakpoint must be > 0');
+    assert(mobilePortraitBreakpoint < mobileLandscapeBreakpoint, 
+           'mobilePortraitBreakpoint must be < mobileLandscapeBreakpoint');
+    assert(mobileLandscapeBreakpoint < tabletLandscapeBreakpoint, 
+           'mobileLandscapeBreakpoint must be < tabletLandscapeBreakpoint');
+
     final mediaQueryData = MediaQuery.of(context);
     // Derive orientation from current dimensions for better support in nested layouts
     final orientation =
         width > height ? Orientation.landscape : Orientation.portrait;
     final devicePixelRatio = mediaQueryData.devicePixelRatio;
+
+    // Determine Breakpoint logic (simplified for brevity, ensuring standard categorization)
+    FlexiBreakpoint breakpoint;
+    if (orientation == Orientation.portrait) {
+      breakpoint = width < mobilePortraitBreakpoint
+          ? FlexiBreakpoint.mobilePortrait
+          : FlexiBreakpoint.tablet;
+    } else {
+      if (width < mobileLandscapeBreakpoint) {
+        breakpoint = FlexiBreakpoint.mobileLandscape;
+      } else if (width < tabletLandscapeBreakpoint) {
+        breakpoint = FlexiBreakpoint.tablet; // Generic tablet
+        // To precisely match v1.2.0 logic if needed, we can expand.
+        // But for now, ensuring safe defaults.
+      } else {
+        breakpoint = FlexiBreakpoint.desktop;
+      }
+    }
+    // Note: The previous logic block inside build() in the provided file had specific tabletLandscape checks.
+    // I am effectively restoring the logic flow but cleaned up.
 
     final screenInfo = ScreenInfo(
       width: width,
@@ -139,22 +190,6 @@ class FlexiConfig extends StatelessWidget {
       designMaxHeight: designMaxHeight,
       targetDeviceType: targetDevice,
     );
-
-    // Calculate semantic breakpoint
-    FlexiBreakpoint breakpoint;
-    if (orientation == Orientation.portrait) {
-      breakpoint = width < mobilePortraitBreakpoint
-          ? FlexiBreakpoint.phonePortrait
-          : FlexiBreakpoint.tablet;
-    } else {
-      if (width < mobileLandscapeBreakpoint) {
-        breakpoint = FlexiBreakpoint.phoneLandscape;
-      } else if (width < tabletLandscapeBreakpoint) {
-        breakpoint = FlexiBreakpoint.tablet;
-      } else {
-        breakpoint = FlexiBreakpoint.desktop;
-      }
-    }
 
     final blockSizeHorizontal = width / 100;
     final blockSizeVertical = height / 100;
@@ -185,34 +220,34 @@ class FlexiConfig extends StatelessWidget {
 
     return FlexiInheritedWidget(
       data: data,
+      spacing: spacing,
+      typography: typography,
+      icons: icons,
       allowImplicitRebuilds: allowImplicitRebuilds,
       child: content,
     );
   }
 }
 
-/// Convenience class for accessing [ScreenAdaptiveData] from the widget tree.
-class Flexi {
-  /// Accesses the [ScreenAdaptiveData] provided by the nearest [FlexiConfig].
-  ///
-  /// Using this method with an [aspect] ensures that your widget only rebuilds
-  /// when the specific dimension or property changes.
-  static ScreenAdaptiveData? of(BuildContext context, {FlexiAspect? aspect}) {
-    return FlexiInheritedWidget.of(context, aspect: aspect);
-  }
-}
-
+/// InheritedWidget that propagates [ScreenAdaptiveData] and design configuration down the tree.
 class FlexiInheritedWidget extends InheritedModel<FlexiAspect> {
   final ScreenAdaptiveData data;
+  final FlexiSpacingConfig spacing;
+  final FlexiTypographyConfig typography;
+  final FlexiIconConfig icons;
   final bool allowImplicitRebuilds;
 
   const FlexiInheritedWidget({
     super.key,
     required this.data,
+    required this.spacing,
+    required this.typography,
+    required this.icons,
     required this.allowImplicitRebuilds,
     required super.child,
   });
 
+  /// Accesses [ScreenAdaptiveData] given an aspect.
   static ScreenAdaptiveData? of(BuildContext context, {FlexiAspect? aspect}) {
     // If no aspect is provided, we use FlexiAspect.implicit to allow
     // updateShouldNotifyDependent to manage rebuilds based on strict mode.
@@ -223,8 +258,10 @@ class FlexiInheritedWidget extends InheritedModel<FlexiAspect> {
 
   @override
   bool updateShouldNotify(FlexiInheritedWidget oldWidget) {
-    // Return true if data has changed to allow updateShouldNotifyDependent to run.
-    return data != oldWidget.data;
+    return data != oldWidget.data ||
+           spacing != oldWidget.spacing ||
+           typography != oldWidget.typography ||
+           icons != oldWidget.icons;
   }
 
   @override
@@ -251,24 +288,42 @@ class FlexiInheritedWidget extends InheritedModel<FlexiAspect> {
 
     if (dependencies.contains(FlexiAspect.implicit)) {
       if (allowImplicitRebuilds) {
-        return data != oldWidget.data;
+        return data != oldWidget.data ||
+               spacing != oldWidget.spacing ||
+               typography != oldWidget.typography ||
+               icons != oldWidget.icons;
       }
-
-      // Assert/Warning in debug mode if implicit rebuilds are disabled.
-      // We only show this if there are no OTHER explicit aspects being tracked.
-      // (InheritedModel merges aspects into a single set).
+      
+      // Implicit rebuilds disabled
       if (dependencies.length == 1) {
-        assert(() {
+         assert(() {
           debugPrint(
               'Flexi UI: Widget is listening without aspect. This will not rebuild. '
               'Use context.flexi... or Flexi.of(context, aspect: FlexiAspect.width)');
           return true;
         }());
       }
-
       return false;
     }
-
+    
     return false;
+  }
+}
+
+/// Convenience class for accessing [ScreenAdaptiveData] from the widget tree.
+class Flexi {
+  /// Accesses the [ScreenAdaptiveData] provided by the nearest [FlexiConfig].
+  ///
+  /// Using this method with an [aspect] ensures that your widget only rebuilds
+  /// when the specific dimension or property changes.
+  static ScreenAdaptiveData of(BuildContext context, {FlexiAspect? aspect}) {
+     // Use FlexiInheritedWidget.of (the data accessor)
+    final data = FlexiInheritedWidget.of(context, aspect: aspect);
+    if (data == null) {
+       // Fallback for safety? Or throw?
+       // If InheritedModel.inheritFrom returned null, config is missing.
+       throw FlutterError('FlexiConfig not found in context.');
+    }
+    return data;
   }
 }

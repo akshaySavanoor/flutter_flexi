@@ -141,7 +141,7 @@ void main() {
     testWidgets('Semantic Breakpoints: Calculates correctly', (tester) async {
       FlexiBreakpoint? breakpoint;
 
-      // Mobile Portrait (Width 300 < 480)
+      // Mobile Portrait (Width 300 < 600)
       await tester.pumpWidget(
         Directionality(
           textDirection: TextDirection.ltr,
@@ -156,7 +156,7 @@ void main() {
           ),
         ),
       );
-      expect(breakpoint, FlexiBreakpoint.phonePortrait);
+      expect(breakpoint, FlexiBreakpoint.mobilePortrait);
 
       // Landscape Phone (Width 600 < 768, height 400)
       await tester.pumpWidget(
@@ -173,7 +173,7 @@ void main() {
           ),
         ),
       );
-      expect(breakpoint, FlexiBreakpoint.phoneLandscape);
+      expect(breakpoint, FlexiBreakpoint.mobileLandscape);
 
       // Desktop (Width 1200 > 1024)
       await tester.pumpWidget(

@@ -92,14 +92,22 @@ class DeviceTypeConfig {
   });
 
   /// Returns `true` if the device is a phone in portrait orientation.
-  bool get isPhonePortrait =>
+  bool get isMobilePortrait =>
       screenInfo.orientation == Orientation.portrait &&
       screenInfo.width < screenInfo.mobilePortraitBreakpoint;
 
   /// Returns `true` if the device is a phone in landscape orientation.
-  bool get isPhoneLandscape =>
+  bool get isMobileLandscape =>
       screenInfo.orientation == Orientation.landscape &&
       screenInfo.width < screenInfo.mobileLandscapeBreakpoint;
+
+  /// Returns `true` if the device is a tablet.
+  bool get isTablet =>
+      (screenInfo.orientation == Orientation.portrait &&
+          screenInfo.width >= screenInfo.mobilePortraitBreakpoint) ||
+      (screenInfo.orientation == Orientation.landscape &&
+          screenInfo.width >= screenInfo.mobileLandscapeBreakpoint &&
+          screenInfo.width < screenInfo.tabletLandscapeBreakpoint);
 
   /// Returns `true` if the device is a tablet in landscape orientation.
   bool get isTabletLandscape =>
