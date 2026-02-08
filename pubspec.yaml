@@ -1,6 +1,6 @@
 name: flexi_ui
 description: A high-performance Flutter responsive UI framework with type-safe breakpoints, fluid scaling, and component-level adaptive layouts.
-version: 1.2.0
+version: 1.2.1
 homepage: https://github.com/akshaySavanoor/flutter_flexi
 repository: https://github.com/akshaySavanoor/flutter_flexi
 issue_tracker: https://github.com/akshaySavanoor/flutter_flexi/issues

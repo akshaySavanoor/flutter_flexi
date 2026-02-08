@@ -1,3 +1,15 @@
+## 1.2.1
+
+### 📚 Documentation Updates
+- Complete README overhaul for clarity and SEO
+- Added API quick reference for scaling extensions
+- Documented parent-based responsiveness (ResponsiveLayout, ResponsiveCard)
+- Added design token documentation (Typography, Spacing, Icons)
+- Documented visual scaling helpers (.fr, .fStroke, .fs)
+- Expanded layout & adaptive components section
+- Added configuration guidance, best practices, and troubleshooting
+- Improved performance model explanation
+
 ## 1.2.0 (Production Hardening & Elite Example)
 
 ### 🛠 Hardening & Reliability
