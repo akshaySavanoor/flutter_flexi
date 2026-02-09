@@ -1,3 +1,15 @@
+### 1.2.2 
+
+### 📚 README & Documentation Update
+- Major README rewrite for better developer experience and clarity
+- Added practical usage examples and scaling decision guidance
+- Clear explanations for layout widgets, scaling methods, design tokens, motion, and accessibility helpers
+- Expanded configuration documentation (useParentConstraints, allowImplicitRebuilds)
+- Improved structure and SEO for easier discoverability
+- Documentation-only release. No API or behavior changes.
+
+---
+
 ## 1.2.1
 
 ### 📚 Documentation Updates

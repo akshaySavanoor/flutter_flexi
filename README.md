@@ -28,7 +28,7 @@ Unlike simple scaling utilities, Flexi UI provides a **complete responsive syste
 
 ```yaml
 dependencies:
-  flexi_ui: ^1.2.0
+  flexi_ui: ^1.2.2
 ```
 
 ### 2️⃣ Wrap Your App with `FlexiConfig`
