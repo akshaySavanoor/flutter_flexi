@@ -6,7 +6,9 @@
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/akshaySavanoor/flutter_flexi/blob/master/LICENSE)  
 [![Flutter](https://img.shields.io/badge/flutter-framework-blue.svg)](https://flutter.dev)
 
-[![Live Demo](https://img.shields.io/badge/DEMO-LIVE_INTERACTIVE-00CFE8?style=for-the-badge&logo=flutter&logoColor=white)](https://akshaysavanoor.github.io/flutter_flexi/)
+[![Live Demo](https://img.shields.io/badge/LIVE-DEMO-00CFE8?style=for-the-badge&logo=flutter&logoColor=white)](https://akshaysavanoor.github.io/flutter_flexi/)
+🌐 **Try Flexi UI Live →**
+[Open Interactive Demo](https://akshaysavanoor.github.io/flutter_flexi/)
 
 **Flexi UI** is a production-ready **Flutter responsive framework** designed to help you build scalable, adaptive user interfaces across **mobile, tablet, and desktop**.
 
