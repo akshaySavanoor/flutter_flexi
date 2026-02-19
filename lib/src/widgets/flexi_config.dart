@@ -164,14 +164,10 @@ class FlexiConfig extends StatelessWidget {
         breakpoint = FlexiBreakpoint.mobileLandscape;
       } else if (width < tabletLandscapeBreakpoint) {
         breakpoint = FlexiBreakpoint.tablet; // Generic tablet
-        // To precisely match v1.2.0 logic if needed, we can expand.
-        // But for now, ensuring safe defaults.
       } else {
         breakpoint = FlexiBreakpoint.desktop;
       }
     }
-    // Note: The previous logic block inside build() in the provided file had specific tabletLandscape checks.
-    // I am effectively restoring the logic flow but cleaned up.
 
     final screenInfo = ScreenInfo(
       width: width,
@@ -292,16 +288,6 @@ class FlexiInheritedWidget extends InheritedModel<FlexiAspect> {
                spacing != oldWidget.spacing ||
                typography != oldWidget.typography ||
                icons != oldWidget.icons;
-      }
-      
-      // Implicit rebuilds disabled
-      if (dependencies.length == 1) {
-         assert(() {
-          debugPrint(
-              'Flexi UI: Widget is listening without aspect. This will not rebuild. '
-              'Use context.flexi... or Flexi.of(context, aspect: FlexiAspect.width)');
-          return true;
-        }());
       }
       return false;
     }

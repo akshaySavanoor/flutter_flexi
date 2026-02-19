@@ -3,8 +3,10 @@
 **A High-Performance, Type-Safe Flutter Responsive & Adaptive UI Framework**
 
 [![Pub Version](https://img.shields.io/pub/v/flexi_ui?color=blue)](https://pub.dev/packages/flexi_ui)  
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/akshaySavanoor/flutter_flexi/blob/main/LICENSE)  
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/akshaySavanoor/flutter_flexi/blob/master/LICENSE)  
 [![Flutter](https://img.shields.io/badge/flutter-framework-blue.svg)](https://flutter.dev)
+
+[![Live Demo](https://img.shields.io/badge/DEMO-LIVE_INTERACTIVE-00CFE8?style=for-the-badge&logo=flutter&logoColor=white)](https://akshaysavanoor.github.io/flutter_flexi/)
 
 **Flexi UI** is a production-ready **Flutter responsive framework** designed to help you build scalable, adaptive user interfaces across **mobile, tablet, and desktop**.
 
@@ -28,7 +30,7 @@ Unlike simple scaling utilities, Flexi UI provides a **complete responsive syste
 
 ```yaml
 dependencies:
-  flexi_ui: ^1.2.2
+  flexi_ui: ^1.2.3
 ```
 
 ### 2️⃣ Wrap Your App with `FlexiConfig`

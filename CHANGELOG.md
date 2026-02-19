@@ -1,3 +1,16 @@
+## 1.2.3
+
+### 🚀 Interactive Framework Playground
+- **FlexiConfig Controller**: Introduced a centralized controller for dynamic, real-time adjustments to design anchors, breakpoints, and targeting strategies.
+- **Enhanced Settings Experience**: Completely redesigned the settings screen into a high-fidelity "Playground" with detailed parameter descriptions and safety validation logic (cautions).
+- **Split Screen Showcase**: Added a new interactive split-view example demonstrating per-panel responsiveness using `FlexiConfig(useParentConstraints: true)`.
+- **Enterprise Standards Audit**: Comprehensive professional documentation across example components and simplified developer comments into production-ready API docs.
+
+### 📚 Documentation
+- Updated README and in-code documentation to reflect v1.2.3 capabilities.
+
+---
+
 ### 1.2.2 
 
 ### 📚 README & Documentation Update
