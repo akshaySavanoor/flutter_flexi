@@ -1,19 +1,25 @@
+## 1.2.4
+
+- Improved README with live demo section
+- Added clear interactive demo link
+- Minor documentation refinements
+
 ## 1.2.3
 
-### 🚀 Interactive Framework Playground
+### Interactive Framework Playground
 - **FlexiConfig Controller**: Introduced a centralized controller for dynamic, real-time adjustments to design anchors, breakpoints, and targeting strategies.
 - **Enhanced Settings Experience**: Completely redesigned the settings screen into a high-fidelity "Playground" with detailed parameter descriptions and safety validation logic (cautions).
 - **Split Screen Showcase**: Added a new interactive split-view example demonstrating per-panel responsiveness using `FlexiConfig(useParentConstraints: true)`.
 - **Enterprise Standards Audit**: Comprehensive professional documentation across example components and simplified developer comments into production-ready API docs.
 
-### 📚 Documentation
+### Documentation
 - Updated README and in-code documentation to reflect v1.2.3 capabilities.
 
 ---
 
 ### 1.2.2 
 
-### 📚 README & Documentation Update
+### README & Documentation Update
 - Major README rewrite for better developer experience and clarity
 - Added practical usage examples and scaling decision guidance
 - Clear explanations for layout widgets, scaling methods, design tokens, motion, and accessibility helpers
@@ -25,7 +31,7 @@
 
 ## 1.2.1
 
-### 📚 Documentation Updates
+### Documentation Updates
 - Complete README overhaul for clarity and SEO
 - Added API quick reference for scaling extensions
 - Documented parent-based responsiveness (ResponsiveLayout, ResponsiveCard)
@@ -43,24 +49,24 @@
 - **FlexiHelper Expansion**: Added `orientation`, `devicePixelRatio`, `screenWidth`, and `screenHeight` to `context.flexi` for improved developer experience.
 - **Fluid Math Safety**: Added `max(1.0, divisor)` to linear interpolation methods to prevent `DivisionByZero` errors in extreme edge cases.
 
-### 🍱 Production Example App
+### Production Example App
 - **Project Overhaul**: Replaced the single-file demo with a realistic, multi-screen example application using production UI patterns.
 - **Screen Showcase**: Added Dashboard, List-Detail (Split-Pane), Responsive Form, and Diagnostics screens.
 - **Performance Audit**: Verified `InheritedModel` scoping with automated rebuild tracking tests.
 
-### 📚 Documentation
+### Documentation
 - **Production Guide**: Rewrote `README.md` with a focus on production best practices and enterprise-grade implementation patterns.
 
 ## 1.1.0 (DX & DevTools Update)
 
-### 🚀 New Features
+### New Features
 - **Semantic Breakpoints**: Introduced the `FlexiBreakpoint` enum (`phonePortrait`, `phoneLandscape`, `tablet`, `desktop`) for intuitive responsive logic.
 - **Nested Responsive Support**: Added `useParentConstraints` to `FlexiConfig`, enabling component-level scaling based on container constraints.
 - **Developer Tools**: Added `FlexiDebugOverlay` for real-time visualization of screen metrics, breakpoints, and orientations.
 - **Semantic Helpers**: Added `context.flexi` extension (`breakpoint`, `screenSize`, `deviceType`) for cleaner access to data.
 - **Type-Safe Aspects**: Replaced aspect strings with the `FlexiAspect` enum for improved DX and typo prevention.
 
-### ⚡ Performance & Correctness
+### Performance & Correctness
 - **Strict Aspect Mode**: Enforced granular rebuilds. Widgets won't rebuild unless they subscribe to a specific `FlexiAspect`.
 - **Implicit Rebuild Escape Hatch**: Added `allowImplicitRebuilds` flag to `FlexiConfig` for backward compatibility.
 - **Intelligent Orientation**: Refactored orientation logic to be derived from local dimensions, fixing issues in nested/split-screen layouts.
@@ -78,14 +84,14 @@
 - Migrated to a high-performance `InheritedModel` architecture.
 - Removed legacy static `ScreenAdaptiveConfig` and `ResponsiveCardConfig` singletons.
 
-### 🚀 New Features
+### New Features
 - **Fluid Scaling**: Added `.aw(max, context)` and `.ah(max, context)` extensions to scale values proportionally between design sizes.
 - **Granular Performance**: Width/height aspect-based rebuilds using `InheritedModel`.
 - **BreakpointValue<T>**: Utility for discrete, step-based responsiveness (Mobile / Tablet / Desktop).
 - **DPR Awareness**: Automatic scaling based on device pixel ratio.
 - **Const Constructors**: Full `const` support across responsive widgets.
 
-### 🛠 Improvements
+### Improvements
 - Restored and documented `DeviceTypeConfig` and `ScreenInfo`.
 - Removed `LayoutBuilder` dependency in core scaling to reduce render overhead.
 

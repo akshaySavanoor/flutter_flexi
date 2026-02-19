@@ -374,7 +374,7 @@ class _MetricSummary extends StatelessWidget {
               value:
                   '${flexi.screenWidth.toInt()} x ${flexi.screenHeight.toInt()}'),
           const SizedBox(height: 24),
-          const Text('flexi_ui v1.2.3\nPRODUCTION ENGINE',
+          const Text('flexi_ui v1.2.4\nPRODUCTION ENGINE',
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 9, color: Colors.grey, height: 1.5)),
         ],
