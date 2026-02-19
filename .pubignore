@@ -1,0 +1,7 @@
+example/**/GeneratedPluginRegistrant.*
+example/**/generated_plugins.cmake
+example/**/gradlew
+example/**/gradlew.bat
+example/**/local.properties
+example/**/ephemeral/**
+example/**/gradle-wrapper.jar
