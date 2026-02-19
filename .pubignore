@@ -1,3 +1,4 @@
+# Ignore generated platform files in example app
 example/**/GeneratedPluginRegistrant.*
 example/**/generated_plugins.cmake
 example/**/gradlew
@@ -5,3 +6,7 @@ example/**/gradlew.bat
 example/**/local.properties
 example/**/ephemeral/**
 example/**/gradle-wrapper.jar
+
+# Ignore local test logs
+tap_target_test.log
+test_output.log
