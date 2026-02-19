@@ -25,9 +25,6 @@ class FlexiGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        // Always use grid logic. If width is infinite (e.g. inside a Dialog
-        // or Horizontal Scroll), we fall back to screen width to compute
-        // the cross-axis count.
         final double width = constraints.maxWidth.isFinite
             ? constraints.maxWidth
             : MediaQuery.sizeOf(context).width;
